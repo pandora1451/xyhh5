@@ -1,7 +1,22 @@
 <template>
 	<div id="example-1" class="container">
+		<!-- <van-nav-bar
+		  title="星愿荟活动商品"
+		  left-text="返回"
+		  left-arrow
+		  @click-left="onClickLeft"
+		/> -->
+		<van-nav-bar title="活动商品合集--星愿荟商城">
+		<!-- 	<template #left>
+				<van-icon name="arrow-left" size="18" />
+				<span size="18">返回</span>
+			</template> -->
+			<!-- <template #right>
+		    <van-icon name="search" size="18" />
+		  </template> -->
+		</van-nav-bar>
 		<div class="banner-box">
-			<img src="../assets/img/banner-hb.jpg" alt="">
+			<img src="../assets/img/banner-hb.png" alt="">
 		</div>
 		<div>
 		</div>
@@ -17,6 +32,15 @@
 	// @ is an alias to /src
 	import GoodsItem from '@/components/GoodsItem.vue'
 	import axios from 'axios'
+	import Vue from 'vue';
+	import router from '../router';
+	import {
+		NavBar,
+		Icon
+	} from 'vant';
+
+	Vue.use(Icon);
+	Vue.use(NavBar);
 
 	export default {
 		name: 'Home',
@@ -25,7 +49,8 @@
 		},
 		data() {
 			return {
-				list: []
+				list: [],
+				isShow: true
 			}
 		},
 		created() {
@@ -43,13 +68,22 @@
 				.then(function() {
 					// always executed
 				});
-				this.init();
+			this.init();
+		},
+		watch: {
+			$route(now, old) { //监控路由变换，控制返回按钮的显示
+				if (now.path == "/home/home") {
+					this.isShow = false;
+				} else {
+					this.isShow = true;
+				}
+			}
 		},
 		methods: {
 			init() {
 				console.log(this.$route)
 			},
-			gotolink(id,hGoodsid) {
+			gotolink(id, hGoodsid) {
 				// this.$router.push({name: 'goods',params:{ id:'1'}});
 				this.$router.push({
 					path: '/goods',
@@ -58,6 +92,9 @@
 						hGoodsid
 					}
 				});
+			},
+			onClickLeft() {
+				router.back(-1)
 			}
 		}
 	}
@@ -72,7 +109,7 @@
 	}
 
 	.goods-container {
-		padding: 0.625rem 1.25rem;
+		padding: 0.625rem 0.55rem;
 		display: flex;
 		display: -webkit-flex;
 		/* Safari */
