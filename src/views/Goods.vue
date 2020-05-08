@@ -94,7 +94,7 @@
 			let id = this.$route.query.id
 			let hGoodsid = this.$route.query.hGoodsid
 			axios.get(
-					'/api/mall/small/default/goods?token=&goodsid=' + id + '&recommid=&typeid=&attrid=&freeid=&fOrderid=&hGoodsid=' +
+					process.env.VUE_APP_BASE_URL+'/mall/small/default/goods?token=&goodsid=' + id + '&recommid=&typeid=&attrid=&freeid=&fOrderid=&hGoodsid=' +
 					hGoodsid, {})
 				.then(function(res) {
 					that.goodsitem.imgs = res.data.data.imgs;

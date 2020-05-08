@@ -56,7 +56,7 @@
 		created() {
 			let that = this
 			
-			axios.get('/api/mall/small/h5/index', {
+			axios.get(process.env.VUE_APP_BASE_URL+'/mall/small/h5/index', {
 
 				})
 				.then(function(res) {
@@ -70,6 +70,8 @@
 					// always executed
 				});
 			this.init();
+			
+			console.log(process.env.VUE_APP_BASE_URL)
 		},
 		watch: {
 			$route(now, old) { //监控路由变换，控制返回按钮的显示
