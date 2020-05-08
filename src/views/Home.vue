@@ -55,6 +55,7 @@
 		},
 		created() {
 			let that = this
+			
 			axios.get('/api/mall/small/h5/index', {
 
 				})
