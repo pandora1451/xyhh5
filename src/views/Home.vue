@@ -6,24 +6,20 @@
 		  left-arrow
 		  @click-left="onClickLeft"
 		/> -->
-		<van-nav-bar title="活动商品合集--星愿荟商城">
-		<!-- 	<template #left>
-				<van-icon name="arrow-left" size="18" />
-				<span size="18">返回</span>
-			</template> -->
-			<!-- <template #right>
-		    <van-icon name="search" size="18" />
-		  </template> -->
-		</van-nav-bar>
-		<div class="banner-box">
-			<img src="../assets/img/banner-hb.png" alt="">
-		</div>
-		<div>
+		<div class="banner-box-home">
+			<van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
+				<van-swipe-item v-for="(item, index) in bannerList" :key="index">
+					<van-image :src="item.imgUrl" />
+				</van-swipe-item>
+			</van-swipe>
 		</div>
 		<ul id="example-2" class="goods-container">
 			<li v-for="item in list" :key="item.hGoodsid" @click="gotolink(item.id,item.hGoodsid)">
 				<GoodsItem :list="item" />
 			</li>
+			<!-- <li v-if="list.length%2 !== 0">
+				<p>更多商品请关注「星愿荟」小程序</p>
+			</li> -->
 		</ul>
 	</div>
 </template>
@@ -35,12 +31,16 @@
 	import Vue from 'vue';
 	import router from '../router';
 	import {
-		NavBar,
+		Swipe,
+		SwipeItem,
+		Image as VanImage,
 		Icon
 	} from 'vant';
 
 	Vue.use(Icon);
-	Vue.use(NavBar);
+	Vue.use(Swipe);
+	Vue.use(SwipeItem);
+	Vue.use(VanImage);
 
 	export default {
 		name: 'Home',
@@ -50,18 +50,20 @@
 		data() {
 			return {
 				list: [],
+				bannerList: [],
 				isShow: true
 			}
 		},
 		created() {
 			let that = this
-			
-			axios.get(process.env.VUE_APP_BASE_URL+'/mall/small/h5/index', {
+
+			axios.get(process.env.VUE_APP_BASE_URL + '/mall/small/h5/index', {
 
 				})
 				.then(function(res) {
 					console.log(res);
-					that.list = res.data.data.rows
+					that.list = res.data.data.rows;
+					that.bannerList = res.data.bannerList;
 				})
 				.catch(function(error) {
 					console.log(error);
@@ -70,7 +72,7 @@
 					// always executed
 				});
 			this.init();
-			
+
 			console.log(process.env.VUE_APP_BASE_URL)
 		},
 		watch: {
@@ -124,5 +126,6 @@
 		width: 49%;
 		display: block;
 		margin: 0.25rem 0;
+		box-shadow: 0px 0px 8px #70a6de;
 	}
 </style>

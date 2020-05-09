@@ -1,12 +1,6 @@
 <template>
 	<div id="goods-container">
 		<!-- <van-nav-bar title="商品详情--星愿荟商城" left-text="返回" left-arrow @click-left="onClickLeft" /> -->
-		<van-nav-bar title="商品详情--星愿荟商城">
-		  <template #left >
-				<van-icon name="arrow-left" size="16" @click="onClickLeft"/>
-				<div class="van-nav-bar__text" @click="onClickLeft">返回</div>
-		  </template>
-		</van-nav-bar>
 		<div class="banner-box">
 			<van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
 				<van-swipe-item v-for="(image, index) in goodsitem.imgs" :key="index">
@@ -29,12 +23,13 @@
 			</div>
 		</div>
 		<van-goods-action>
-			<van-goods-action-button type="danger" text="点击前往小程序购买" @click="onClickButton" />
+			<van-goods-action-button type="danger" text="获取购买二维码" @click="onClickButton" />
 		</van-goods-action>
 		<van-overlay :show="show">
-			<div class="wrapper" @click.stop="hideIt">
+			<div class="wrapper" @click.stop="hideIt($event)">
 				<div>
-					<p class="title">识别下方二维码前往商品页</p>
+					<p class="title">长按保存下方二维码</p>
+					<p class="title">通过「微信扫一扫」识别保存的二维码</p>
 					<img :src="goodsitem.miniUrl" alt="">
 				</div>
 			</div>
@@ -48,13 +43,13 @@
 	import axios from 'axios'
 	import Vue from 'vue';
 	import router from '../router';
+	import html2canvas from "html2canvas"
 	import {
 		Swipe,
 		SwipeItem,
 		Lazyload,
 		Image as VanImage,
 		Divider,
-		NavBar,
 		GoodsAction,
 		GoodsActionIcon,
 		GoodsActionButton,
@@ -66,7 +61,6 @@
 	Vue.use(Lazyload);
 	Vue.use(VanImage);
 	Vue.use(Divider);
-	Vue.use(NavBar);
 	Vue.use(GoodsAction);
 	Vue.use(GoodsActionButton);
 	Vue.use(GoodsActionIcon);
@@ -86,7 +80,9 @@
 					miniUrl: null,
 					specification: null
 				},
-				show: false
+				show: false,
+				photoUrl: "",
+				photoShow: false
 			}
 		},
 		created() {
@@ -94,7 +90,8 @@
 			let id = this.$route.query.id
 			let hGoodsid = this.$route.query.hGoodsid
 			axios.get(
-					process.env.VUE_APP_BASE_URL+'/mall/small/default/goods?token=&goodsid=' + id + '&recommid=&typeid=&attrid=&freeid=&fOrderid=&hGoodsid=' +
+					process.env.VUE_APP_BASE_URL + '/mall/small/default/goods?token=&goodsid=' + id +
+					'&recommid=&typeid=&attrid=&freeid=&fOrderid=&hGoodsid=' +
 					hGoodsid, {})
 				.then(function(res) {
 					that.goodsitem.imgs = res.data.data.imgs;
@@ -124,8 +121,10 @@
 			onClickButton() {
 				this.show = true
 			},
-			hideIt() {
-				this.show = false
+			hideIt(e) {
+				if(e.target.localName !== 'img'){
+					this.show = false
+				}
 			}
 		}
 	}
@@ -185,9 +184,11 @@
 		text-align: center;
 		font-size: 1rem;
 	}
-	#goods-container .banner-box{
+
+	#goods-container .banner-box {
 		min-height: 6.25rem;
 	}
+
 	.wrapper {
 		display: flex;
 		align-items: center;
@@ -199,7 +200,12 @@
 	}
 
 	.wrapper img {
-		width: 50%;
+		width: 60%;
+		margin-top: 0.5rem;
+	}
+
+	.wrapper .title {
+		font-weight: bold;
 	}
 
 	.block {
@@ -208,14 +214,14 @@
 		background-color: #fff;
 	}
 
-	.my-swipe .van-image {
+	#goods-container .my-swipe .van-image {
 		position: relative;
 		width: 100%;
 		height: 0;
 		padding-top: 100%;
 	}
 
-	.my-swipe .van-image img {
+	#goods-container .my-swipe .van-image img {
 		width: 100%;
 		height: 100%;
 		position: absolute;
