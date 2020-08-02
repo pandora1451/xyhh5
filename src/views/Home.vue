@@ -14,16 +14,18 @@
 			</van-swipe>
 		</div>
 		<ul id="example-2" class="goods-container">
-			<li v-for="item in list" :key="item.hGoodsid" @click="gotolink(item.id,item.hGoodsid)">
+			<li v-for="item in list" :key="item.hGoodsid" @click="gotolink(item.id,item.hGoodsid,item.typeid,item.recommid,item.attrid,item.freeid,item.fOrderid)">
 				<GoodsItem :list="item" />
 			</li>
 			<!-- <li v-if="list.length%2 !== 0">
 				<p>更多商品请关注「星愿荟」小程序</p>
 			</li> -->
 		</ul>
+		<div class="banner-bottom-box">
+			<img src="../assets/img/banner-bottom.jpg" />
+		</div>
 	</div>
 </template>
-
 <script>
 	// @ is an alias to /src
 	import GoodsItem from '@/components/GoodsItem.vue'
@@ -88,13 +90,18 @@
 			init() {
 				console.log(this.$route)
 			},
-			gotolink(id, hGoodsid) {
+			gotolink(id, hGoodsid,typeid,recommid,attrid,freeid,fOrderid) {
 				// this.$router.push({name: 'goods',params:{ id:'1'}});
 				this.$router.push({
 					path: '/goods',
 					query: {
 						id,
-						hGoodsid
+						hGoodsid,
+						typeid,
+						recommid,
+						attrid,
+						freeid,
+						fOrderid
 					}
 				});
 			},
@@ -127,5 +134,13 @@
 		display: block;
 		margin: 0.25rem 0;
 		box-shadow: 0px 0px 8px #70a6de;
+	}
+	.banner-bottom-box{
+		width: 100%;
+		min-height: 100px;
+		padding-bottom: 1rem;
+	}
+	.banner-bottom-box img{
+		width: 100%;
 	}
 </style>

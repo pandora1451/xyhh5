@@ -8,7 +8,7 @@
 				{{list.title}}
 			</div>
 			<div class="price-box">
-				<div class="left">¥{{list.price}}</div>
+				<div class="left">¥{{list.ccprice}}</div>
 				<div class="right"><del>¥{{list.marketprice}}</del></div>
 			</div>
 		</div>

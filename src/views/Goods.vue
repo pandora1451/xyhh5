@@ -89,9 +89,14 @@
 			let that = this;
 			let id = this.$route.query.id
 			let hGoodsid = this.$route.query.hGoodsid
+			let typeid = this.$route.query.typeid || ''
+			let recommid = this.$route.query.recommid || ''
+			let attrid = this.$route.query.attrid || ''
+			let freeid = this.$route.query.freeid || ''
+			let fOrderid = this.$route.query.fOrderid || ''
 			axios.get(
 					process.env.VUE_APP_BASE_URL + '/mall/small/default/goods?token=&goodsid=' + id +
-					'&recommid=&typeid=&attrid=&freeid=&fOrderid=&hGoodsid=' +
+					'&recommid='+recommid+'&typeid='+typeid+'&attrid='+attrid+'&freeid='+freeid+'&fOrderid='+fOrderid+'&hGoodsid=' +
 					hGoodsid, {})
 				.then(function(res) {
 					that.goodsitem.imgs = res.data.data.imgs;
