@@ -54,5 +54,10 @@
 	}
 </script>
 <style>
-	
+	.container .body .img1-box img{
+		width: 100%;
+	}
+	.container .body .img2-box img{
+		width: 100%;
+	}
 </style>
