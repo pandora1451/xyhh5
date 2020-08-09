@@ -1,22 +1,6 @@
 <template>
 	<div class="container">
-		<div class="title">
-			<p>自由设计的专属店铺</p>
-			<p>随心定制店铺推广码</p>
-			<p>特色创新的裂变传播</p>
-			<p>会员直播营销全覆盖</p>
-		</div>
-		<div class="body">
-			<div class="img1-box">
-			<img src="../assets/img/img1.png" alt="">
-			</div>
-			<div class="img2-box">
-			<img src="../assets/img/img2.png" alt="">
-			</div>
-		</div>
-		<div class="btn-wrapper">
-			<button v-on:click="btnClick">加入我们</button>
-		</div>
+		授权页内容
 	</div>
 </template>
 <script>
@@ -27,6 +11,10 @@
 	import {
 	} from 'vant';
 
+	import { app } from "../../utils/app";
+	import { api } from "../../utils/api";
+
+	import { appid } from "../../utils/const";
 
 	export default {
 		name: 'Home',
@@ -34,21 +22,51 @@
 		},
 		data() {
 			return {
-			
+				hasToken:false
 			}
 		},
 		created() {
-			
+			this.login()
 		},
 		watch: {
 			
 		},
 		methods: {
 			init() {
-				console.log(this.$route)
+				console.log('route',this.$route)
 			},
-			btnClick() {
-				console.log('btn-clicked')
+			login(){
+				var query = app.parseUrlQuery();
+				if (app.checkToken()) {
+					var token = app.checkToken();
+					console.log(token)
+					var userData = app.storage.get('userData');
+					if (userData.wechatUrl && userData.wechatUrl != '/0') {
+						var imgUrl = userData.wechatUrl;
+					} else {
+						var imgUrl = 'img/w3.png';
+					}
+					// $('.thumb>img').attr('src', imgUrl);
+					// $('.person>.nick>span').html(userData.wechatName);
+					app.loadUserMsgStatus(token, 'user');
+				} else {
+					var url = window.location.href;
+					if (url.indexOf('https://open.weixin.qq.com/connect/oauth2/authorize') == -1 && !query['code']) {
+						window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6d4b592411ae15a0&redirect_uri=' +
+							url + '&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect';
+					} else {
+						var ua = window.navigator.userAgent.toLowerCase();
+						if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+							if (query['code']) {
+								app.loadWechat(query['code'], 'user');
+							} else {
+								alert('授权失败~');
+							}
+						} else {
+							alert('请在微信浏览器下打开~');
+						}
+					}
+				};
 			}
 		}
 	}
