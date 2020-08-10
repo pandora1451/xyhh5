@@ -348,7 +348,7 @@ app.loadWechat = function (code, type, id, orgId) {
             if (type == 'qhb') {
                 console.log('qhb')
             } else if (type == 'user') {
-                
+                this.hasToken = true
             } else {
                
             }
