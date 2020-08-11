@@ -48,19 +48,16 @@
 			},
 			login(){
 				var query = app.parseUrlQuery();
-				if (app.checkToken()) {
-					var token = app.checkToken();
-					console.log("有token:",token)
-					var userData = app.storage.get('userData');
-					if (userData.wechatUrl && userData.wechatUrl != '/0') {
-						var imgUrl = userData.wechatUrl;
-					} else {
-						var imgUrl = 'img/w3.png';
-					}
-					// $('.thumb>img').attr('src', imgUrl);
-					// $('.person>.nick>span').html(userData.wechatName);
-					// app.loadUserMsgStatus(token, 'user');
-				} else {
+				// if (app.checkToken()) {
+				// 	var token = app.checkToken();
+				// 	console.log("有token:",token)
+				// 	var userData = app.storage.get('userData');
+				// 	if (userData.wechatUrl && userData.wechatUrl != '/0') {
+				// 		var imgUrl = userData.wechatUrl;
+				// 	} else {
+				// 		var imgUrl = 'img/w3.png';
+				// 	}
+				// } else {
 					var url = window.location.href;
 					if (url.indexOf('https://open.weixin.qq.com/connect/oauth2/authorize') == -1 && !query['code']) {
 						window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6d4b592411ae15a0&redirect_uri=' +
@@ -77,7 +74,7 @@
 							alert('请在微信浏览器下打开~');
 						}
 					}
-				};
+				// };
 			}
 		}
 	}
