@@ -1,6 +1,8 @@
 import {
-    api
+    root
 } from "./api";
+import jquery from "jquery"
+const $ = jquery
 const app = {}
 app.toMyJson = function (param) {
     return {
@@ -11,7 +13,7 @@ app.doAjax = function (interFace, type, param, succCallBack) {
     console.log('接口:' + interFace);
     console.log('类型:' + type);
     console.log('输入:' + JSON.stringify(param));
-    //console.log('函数:' + succCallBack);
+    console.log('函数:' + succCallBack);
     $.ajax({
         url: interFace,
         dataType: 'jsonp',
@@ -19,13 +21,13 @@ app.doAjax = function (interFace, type, param, succCallBack) {
         data: param,
         //timeout: root.timeout,
         beforeSend: function (request) {
-            app.loader.show();
+            // app.loader.show();
         },
         success: function (data, status, response) {
             succCallBack(data, status, response);
         },
         complete: function () {
-            app.loader.hide();
+            // app.loader.hide();
         },
         error: function (xhr, type, errorThrown) {
             console.log(xhr, type, errorThrown);
@@ -33,6 +35,7 @@ app.doAjax = function (interFace, type, param, succCallBack) {
             alert('网络忙，请稍后再试');
         }
     });
+
 }
 /*
  * 获取url参数
@@ -74,35 +77,8 @@ app.checkToken = function () {
 /*
  *    本地存储
  */
-// app.storage = function () {
-//     console.log(1)
-//     function setParams(key, jsonObj) {
-//         localStorage.setItem(key, JSON.stringify(jsonObj));
-//     }
-
-//     function getParams(key) {
-//         var strObj = localStorage.getItem(key);
-//         console.log('get',strObj)
-//         return JSON.parse(strObj);
-//     }
-
-//     function removeParams(key){
-//         localStorage.removeItem(key);
-//     }
-
-//     function removeAllParams(){
-//         localStorage.clear();
-//     }
-
-//     return {
-//         set: setParams,
-//         get: getParams,
-//         remove:removeParams,
-//         removeAll:removeAllParams
-//     }
-// }
 app.storage = {
-    setParams: function (key, jsonObj) {
+    set: function (key, jsonObj) {
         localStorage.setItem(key, JSON.stringify(jsonObj));
     },
     get: function (key) {
@@ -343,12 +319,14 @@ app.loadWechat = function (code, type, id, orgId) {
 
     var succCallBack = function (data, status, response) {
         if (data.code == 200) {
+            console.log('调通',data)
             app.storage.set('userData', data.data);
             app.storage.set('key', data.data.token);
             if (type == 'qhb') {
                 console.log('qhb')
             } else if (type == 'user') {
-                this.hasToken = true
+                // this.hasToken = true
+                console.log('user')
             } else {
                
             }
@@ -356,7 +334,7 @@ app.loadWechat = function (code, type, id, orgId) {
             alert(data.message);
         }
     }
-    return app.doAjax(api.interFace.getWechatCode, 'post', app.toMyJson(param), succCallBack)
+    return app.doAjax(root.interFace.getWechatCode, 'post', app.toMyJson(param), succCallBack)
 };
 //用户-获取消息状态
 app.loadUserMsgStatus = function (token, type) {

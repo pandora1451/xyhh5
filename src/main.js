@@ -2,8 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import less from 'less'
-Vue.use(less)
+// import jquery from "jquery"
 
+// import axios from 'axios'
+Vue.use(less)
+// Vue.use(axios);
+
+// Vue.prototype.$ajax = axios
 Vue.config.devtools = true;
 Vue.config.productionTip = false
 

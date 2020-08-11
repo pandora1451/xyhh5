@@ -6,3 +6,5 @@ let root = {
         getWechatCode:INTERFACE_URL+'/customer/getWechatInfoByCode',//微信授权
     },
 }
+
+export {root}

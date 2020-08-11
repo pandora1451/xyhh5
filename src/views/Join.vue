@@ -17,14 +17,13 @@
 </template>
 <script>
 	// @ is an alias to /src
-	import axios from 'axios'
 	import Vue from 'vue';
 	import router from '../router';
 	import {
 	} from 'vant';
 
 	import { app } from "../../utils/app";
-	import { api } from "../../utils/api";
+	import { root } from "../../utils/api";
 
 	import { appid } from "../../utils/const";
 
@@ -49,9 +48,9 @@
 			},
 			login(){
 				var query = app.parseUrlQuery();
-				if (!app.checkToken()) {
+				if (app.checkToken()) {
 					var token = app.checkToken();
-					console.log(token)
+					console.log("有token:",token)
 					var userData = app.storage.get('userData');
 					if (userData.wechatUrl && userData.wechatUrl != '/0') {
 						var imgUrl = userData.wechatUrl;
@@ -60,7 +59,7 @@
 					}
 					// $('.thumb>img').attr('src', imgUrl);
 					// $('.person>.nick>span').html(userData.wechatName);
-					app.loadUserMsgStatus(token, 'user');
+					// app.loadUserMsgStatus(token, 'user');
 				} else {
 					var url = window.location.href;
 					if (url.indexOf('https://open.weixin.qq.com/connect/oauth2/authorize') == -1 && !query['code']) {
