@@ -1,6 +1,8 @@
 import {
     root
 } from "./api";
+import {BASE_URL} from "./const"
+import router from '../src/router';
 import jquery from "jquery"
 const $ = jquery
 const app = {}
@@ -321,12 +323,13 @@ app.loadWechat = function (code, type, id, orgId) {
         if (data.code == 200) {
             console.log('调通',data)
             app.storage.set('userData', data.data);
-            app.storage.set('key', data.data.token);
+            app.storage.set('token', data.data.token);
             if (type == 'qhb') {
                 console.log('qhb')
             } else if (type == 'user') {
                 // this.hasToken = true
                 console.log('user')
+                window.location.href = BASE_URL+'/Login';
             } else {
                
             }

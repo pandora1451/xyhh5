@@ -5,12 +5,12 @@
 		</div>
 		<div class="login-box">
 			<div class="tags">
-				<div class="mm">
+				<!-- <div class="mm">
 					<p>账号密码登录</p>
 				</div>
 				<div class="ms">
 					<p>账号验证码登录</p>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
