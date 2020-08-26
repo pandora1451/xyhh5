@@ -1,6 +1,6 @@
 import {
     root
-} from "./api";
+} from "./const";
 import {BASE_URL} from "./const"
 import router from '../src/router';
 import jquery from "jquery"

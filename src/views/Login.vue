@@ -38,7 +38,7 @@
             :rules="[{ required: true, message: '请填写密码' }]"
           />
           <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit">提交</van-button>
+            <van-button round block type="info" native-type="submit" v-on:click="goLogin">提交</van-button>
           </div>
         </van-form>
       </template>
@@ -69,7 +69,7 @@
             :rules="[{ required: true, message: '请填写验证码' }]"
           />
           <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit">提交</van-button>
+            <van-button round block type="info" native-type="submit" v-on:click="goLogin">提交</van-button>
           </div>
         </van-form>
       </template>
@@ -80,7 +80,9 @@
 import axios from "axios";
 import Vue from "vue";
 import router from "../router";
-import { Form, Field, Button,CellGroup,Toast } from "vant";
+import { app } from "../../utils/app";
+import { Form, Field, Button, CellGroup, Toast } from "vant";
+import { getValidateCode,login } from "../../utils/request";
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
@@ -88,18 +90,25 @@ Vue.use(CellGroup);
 Vue.use(Toast);
 
 import { root } from "../../utils/api";
-console.log(root)
+console.log(root);
 export default {
   data() {
     return {
       username: "",
 	  password: "",
+      phone: "",
+      verifycode: "",
       loginType: 0,
       codeText: "获取",
-	  disabledCodeBtn: true,
-	  phone: '',
-	  verifycode: ''
+      disabledCodeBtn: true,
+      token: "",
     };
+  },
+  async created() {
+    console.log(22222222222);
+    app.storage.set("token", "bd73938c37ec421fa545e530990d4cf4");
+    let t = await app.storage.get("token");
+    this.token = t;
   },
   methods: {
     onSubmit(values) {
@@ -111,24 +120,22 @@ export default {
     },
     // 向后台要验证码方法
     async sendVerifycode() {
-		console.log(1)
-      if (this.verifyPhone()) {
-		  console.log(2)
-        Toast(this.verifyPhone());
-      } else {
-		  console.log(3)
-        let res = await root.interFace.getValidateCode(this.phone);
-        //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
-        if (res) {
-          this.countDown(60);
-        }
-      }
+      console.log(1);
+	let params = {
+		mobileNo: this.phone,
+		token: this.token,
+	};
+	let res = await getValidateCode(params);
+	//  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
+	if (res) {
+		this.countDown(60);
+	}
     },
     // 表单校验方法
     verifyPhone() {
-      if (!this.phone) {
+      if (!this.username) {
         return "请输入手机号";
-      } else if (this.phone.length !== 11) {
+      } else if (this.username.length !== 11) {
         return "请输入11位手机号";
       } else {
         return false;
@@ -150,17 +157,36 @@ export default {
       }, 1000);
     },
     // 登录
-    login() {
-      if (this.verifyPhone()) {
-        Toast(this.verifyPhone());
-      } else {
-        let params = {
-          phone: this.phone,
-          code: this.verifycode,
-        };
-        // 这里写登录的接口
-      }
+    async goLogin() {
+		let params
+		console.log(111)
+        if (this.loginType == 0) {
+			console.log(2222)
+          params = {
+            username: this.username,
+            password: this.password,
+            loginType: 0,
+          };
+        } else {
+			console.log(33333)
+          params = {
+            username: this.phone,
+            password: this.verifycode,
+            loginType: 1,
+          };
+		}
+		// let res1 = await login(params)
+		// console.log('res1',res1)
+		axios.post(process.env.VUE_APP_BASE_URL + '/mall/small/h5/login', {params})
+		.then(function (response) {
+			console.log(response);
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+		// 这里写登录的接口
     },
+	getValidateCode() {}
   },
 };
 </script>

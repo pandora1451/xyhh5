@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="img-wrapper">
-			<img src="../assets/img/d.png" alt="">
+			<!-- <img src="../assets/img/d.png" alt=""> -->
 		</div>
 		<div class="login-box">
 			<div class="tags">
@@ -23,7 +23,7 @@
 	} from 'vant';
 
 	import { app } from "../../utils/app";
-	import { root } from "../../utils/api";
+	import { root } from "../../utils/const";
 
 	import { appid } from "../../utils/const";
 
