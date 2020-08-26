@@ -94,11 +94,11 @@ console.log(root);
 export default {
   data() {
     return {
-      username: "",
-	  password: "",
-      phone: "",
-      verifycode: "",
-      loginType: 0,
+      username: "",//用户名
+	    password: "",//密码
+      phone: "",//手机号
+      verifycode: "",//验证码
+      loginType: 0,//登录方式0账号密码1手机号验证码
       codeText: "获取",
       disabledCodeBtn: true,
       token: "",
@@ -106,7 +106,7 @@ export default {
   },
   async created() {
     console.log(22222222222);
-    app.storage.set("token", "bd73938c37ec421fa545e530990d4cf4");
+    // app.storage.set("token", "bd73938c37ec421fa545e530990d4cf4");
     let t = await app.storage.get("token");
     this.token = t;
   },
