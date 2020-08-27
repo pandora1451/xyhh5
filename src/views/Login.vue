@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="container1">
     <div class="img-wrapper">
-      <!-- <img src="../assets/img/d.png" alt /> -->
+      <img src="../assets/img/d.png" alt />
     </div>
     <div class="login-box">
       <div class="tags">
@@ -19,13 +19,14 @@
         >短信验证码登录</div>
       </div>
     </div>
-    <div class="container">
+    <div class="container-form">
       <template v-if="loginType==0">
         <van-form @submit="onSubmit">
           <van-field
             v-model="username"
             name="用户名"
             label="用户名"
+            left-icon="manager-o"
             placeholder="用户名"
             :rules="[{ required: true, message: '请填写用户名' }]"
           />
@@ -34,11 +35,12 @@
             type="password"
             name="密码"
             label="密码"
+            left-icon="closed-eye"
             placeholder="密码"
             :rules="[{ required: true, message: '请填写密码' }]"
           />
           <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit" v-on:click="goLogin">提交</van-button>
+            <van-button class-prefix="my-btn" round block type="primary" native-type="submit" v-on:click="goLogin">登录</van-button>
           </div>
         </van-form>
       </template>
@@ -48,6 +50,7 @@
             v-model="phone"
             name="手机号"
             label="手机号"
+            left-icon="user-o"
             placeholder="手机号"
             :rules="[{ required: true, message: '请填写手机号' },
 			{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！'}]"
@@ -65,11 +68,12 @@
             type="password"
             name="验证码"
             label="验证码"
+            left-icon="chat-o"
             placeholder="验证码"
             :rules="[{ required: true, message: '请填写验证码' }]"
           />
           <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit" v-on:click="goLogin">提交</van-button>
+            <van-button round block type="primary" native-type="submit" v-on:click="goLogin">登录</van-button>
           </div>
         </van-form>
       </template>
@@ -191,7 +195,7 @@ export default {
 };
 </script>
 <style lang="less">
-.container {
+.container1 {
   background-color: #ffffff;
   .img-wrapper {
     background-color: #ffffff;
@@ -214,14 +218,29 @@ export default {
     .tags {
       display: flex;
       justify-content: space-around;
+      padding: 0 30px;
       .tag {
         text-align: center;
-        font-size: 18px;
+        font-size: 16px;
+        height: 22px;
+        padding: 0 10px;
+        line-height: 22px;
+        color: #888888;
+        box-sizing: border-box;
         &.active {
-          font-size: 22px;
+          font-size: 16px;
+          color: #333333;
+          border-bottom: 1px solid #dedede;
         }
       }
     }
+  }
+  .container-form{
+      padding: 10px 20px;
+      .van-button--small{
+        height: 24px;
+        line-height: 24px
+      }
   }
 }
 </style>

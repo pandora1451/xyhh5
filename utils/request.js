@@ -16,13 +16,13 @@ export function getWechatCode(params) {
 export function login(params) {
   console.log('login123')
   return Service({
-    url: '/small/h5/login',
+    url: '/mall/small/h5/login',
     params: app.toMyJson(params)
   })
 }
 export function regist(params) {
   return Service({
-    url: '/small/h5/regist',
+    url: '/mall/small/h5/regist',
     params: app.toMyJson(params)
   })
 }

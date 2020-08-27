@@ -10,12 +10,12 @@
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
           <div class="img1-box">
-            <img src="../assets/img/img1.png" alt />
+            <!-- <img src="../assets/img/img1.png" alt /> -->
           </div>
         </van-swipe-item>
         <van-swipe-item>
           <div class="img2-box">
-            <img src="../assets/img/img2.png" alt />
+            <!-- <img src="../assets/img/img2.png" alt /> -->
           </div>
         </van-swipe-item>
       </van-swipe>

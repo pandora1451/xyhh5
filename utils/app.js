@@ -329,7 +329,7 @@ app.loadWechat = function (code, type, id, orgId) {
             } else if (type == 'user') {
                 // this.hasToken = true
                 console.log('user')
-                window.location.href = BASE_URL+'/Login';
+                window.location.href = BASE_URL+'/Regist';
             } else {
                
             }
