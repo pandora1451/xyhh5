@@ -27,7 +27,6 @@
             name="用户名"
             label="用户名"
             left-icon="manager-o"
-            placeholder="用户名"
             :rules="[{ required: true, message: '请填写用户名' }]"
           />
           <van-field
@@ -36,11 +35,17 @@
             name="密码"
             label="密码"
             left-icon="closed-eye"
-            placeholder="密码"
             :rules="[{ required: true, message: '请填写密码' }]"
           />
           <div style="margin: 16px;">
-            <van-button class-prefix="my-btn" round block type="primary" native-type="submit" v-on:click="goLogin">登录</van-button>
+            <van-button
+              class-prefix="my-btn"
+              round
+              block
+              type="primary"
+              native-type="submit"
+              v-on:click="goLogin"
+            >登录</van-button>
           </div>
         </van-form>
       </template>
@@ -51,7 +56,6 @@
             name="手机号"
             label="手机号"
             left-icon="user-o"
-            placeholder="手机号"
             :rules="[{ required: true, message: '请填写手机号' },
 			{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！'}]"
           >
@@ -69,7 +73,6 @@
             name="验证码"
             label="验证码"
             left-icon="chat-o"
-            placeholder="验证码"
             :rules="[{ required: true, message: '请填写验证码' }]"
           />
           <div style="margin: 16px;">
@@ -78,38 +81,50 @@
         </van-form>
       </template>
     </div>
+    <van-overlay :show="show" @click="overlayClick">
+      <div class="wrapper">
+        <div class="block">
+          <p class="title">恭喜您通过审核！</p>
+          <p class="title2">请登录PC端管理后台，装修店铺，上传商品，处理订单。地址：</p>
+          <p class="url">https://man.ydxyh.cn</p>
+          <p class="bot">——星愿荟</p>
+        </div>
+      </div>
+    </van-overlay>
   </div>
+  
 </template>
 <script>
 import axios from "axios";
 import Vue from "vue";
 import router from "../router";
 import { app } from "../../utils/app";
-import { Form, Field, Button, CellGroup, Toast } from "vant";
-import { getValidateCode,login } from "../../utils/request";
+import { Form, Field, Button, CellGroup, Toast,Dialog,Overlay } from "vant";
+import { getValidateCode, login } from "../../utils/request";
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
 Vue.use(CellGroup);
 Vue.use(Toast);
+Vue.use(Overlay);
 
 import { root } from "../../utils/api";
 console.log(root);
 export default {
   data() {
     return {
-      username: "",//用户名
-	    password: "",//密码
-      phone: "",//手机号
-      verifycode: "",//验证码
-      loginType: 0,//登录方式0账号密码1手机号验证码
-      codeText: "获取",
+      username: "", //用户名
+      password: "", //密码
+      phone: "", //手机号
+      verifycode: "", //验证码
+      loginType: 0, //登录方式0账号密码1手机号验证码
+      codeText: "获取验证码",
       disabledCodeBtn: true,
       token: "",
+      show:false
     };
   },
   async created() {
-    console.log(22222222222);
     // app.storage.set("token", "bd73938c37ec421fa545e530990d4cf4");
     let t = await app.storage.get("token");
     this.token = t;
@@ -125,15 +140,15 @@ export default {
     // 向后台要验证码方法
     async sendVerifycode() {
       console.log(1);
-	let params = {
-		mobileNo: this.phone,
-		token: this.token,
-	};
-	let res = await getValidateCode(params);
-	//  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
-	if (res) {
-		this.countDown(60);
-	}
+      let params = {
+        mobileNo: this.phone,
+        token: this.token,
+      };
+      let res = await getValidateCode(params);
+      //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
+      if (res) {
+        this.countDown(60);
+      }
     },
     // 表单校验方法
     verifyPhone() {
@@ -162,35 +177,60 @@ export default {
     },
     // 登录
     async goLogin() {
-		let params
-		console.log(111)
-        if (this.loginType == 0) {
-			console.log(2222)
-          params = {
-            username: this.username,
-            password: this.password,
-            loginType: 0,
-          };
-        } else {
-			console.log(33333)
-          params = {
-            username: this.phone,
-            password: this.verifycode,
-            loginType: 1,
-          };
-		}
-		// let res1 = await login(params)
-		// console.log('res1',res1)
-		axios.post(process.env.VUE_APP_BASE_URL + '/mall/small/h5/login', {params})
-		.then(function (response) {
-			console.log(response);
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-		// 这里写登录的接口
+      let params;
+      if (this.loginType == 0) {
+        console.log(2222);
+        params = {
+          username: this.username,
+          password: this.password,
+          loginType: 0,
+        };
+      } else {
+        params = {
+          username: this.phone,
+          password: this.verifycode,
+          loginType: 1,
+        };
+      }
+      let res1 = await login(params)
+      console.log('res1',res1,res1.data.msg)
+      if(res1.status == 200){
+        if(res1.data.code == 0){
+          if(res1.data.state == 0){
+            Dialog.alert({
+              message: res1.data.content
+            }).then(() => {
+              console.log('用户确认')
+            });
+          }else if(res1.data.state == 1){
+            this.showPass = true
+          }else{
+            Dialog.alert({
+              message: res1.data.content
+            }).then(() => {
+              console.log('用户确认')
+            });
+          }
+        }else{
+          Dialog.alert({
+            message: res1.data.msg
+          }).then(() => {
+            console.log('用户确认')
+          });
+        }
+      }else{
+        Dialog.alert({
+          message: res1.data.msg
+        }).then(() => {
+          console.log('用户确认')
+        });
+      }
     },
-	getValidateCode() {}
+    getValidateCode() {},
+    overlayClick(){
+      console.log(1)
+      this.show = false
+    }
   },
 };
 </script>
@@ -235,12 +275,49 @@ export default {
       }
     }
   }
-  .container-form{
-      padding: 10px 20px;
-      .van-button--small{
-        height: 24px;
-        line-height: 24px
-      }
+  .container-form {
+    padding: 10px 20px;
+    .van-button--small {
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .block {
+    width: 320px;
+    height: 360px;
+    padding: 40px 20px 20px 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    font-size: 22px;
+    .title{
+      font-size: 26px;
+    text-align: center;
+    }
+    .title2{
+      font-size: 20px;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .url{
+      font-size: 24px;
+      font-weight: bold;
+      color:#0364e4;
+      text-align: left;
+    }
+    .bot{
+      text-align: right;
+      color: #FF3366;
+      font-size: 22px;
+      margin-top: 100px;
+      font-weight: bold;
+    }
   }
 }
 </style>

@@ -1,8 +1,20 @@
 <template>
   <div class="container">
-    <div class="img-wrapper">
+    <!-- <div class="img-wrapper">
       <img src="../assets/img/a.png" alt />
-    </div>
+    </div> -->
+    <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
+      <van-swipe-item>
+        <div class="img1-box">
+          <img src="../assets/img/a.png" alt />
+        </div>
+      </van-swipe-item>
+      <van-swipe-item>
+        <div class="img2-box">
+          <img src="../assets/img/c.png" alt />
+        </div>
+      </van-swipe-item>
+    </van-swipe>
     <div class="login-box">
     </div>
     <div class="container-form">
@@ -12,7 +24,7 @@
           name="手机号"
           label="手机号"
           left-icon="user-o"
-          placeholder="手机号"
+          placeholder=""
           :rules="[{ required: true, message: '请填写手机号' },
 			{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！'}]"
         >
@@ -30,7 +42,7 @@
           name="验证码"
           label="验证码"
           left-icon="chat-o"
-          placeholder="验证码"
+          placeholder=""
           :rules="[{ required: true, message: '请填写验证码' }]"
         />
         <van-field
@@ -38,7 +50,7 @@
           name="店铺名称"
           label="店铺名"
           left-icon="shop-o"
-          placeholder="店铺名称"
+          placeholder=""
           :rules="[{ required: true, message: '请填写店铺名称' }]"
         />
         <van-field
@@ -46,7 +58,7 @@
           name="微信号"
           label="微信号"
           left-icon="friends-o"
-          placeholder="微信号"
+          placeholder=""
           :rules="[{ required: true, message: '请填写微信号' }]"
         />
         <div style="margin: 16px;">
@@ -64,8 +76,10 @@ import axios from "axios";
 import Vue from "vue";
 import router from "../router";
 import { app } from "../../utils/app";
-import { Form, Field, Button, CellGroup, Toast } from "vant";
+import { Form, Field, Button, CellGroup, Toast,Swipe,SwipeItem } from "vant";
 import { getValidateCode, regist } from "../../utils/request";
+Vue.use(Swipe);
+Vue.use(SwipeItem);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
@@ -77,7 +91,7 @@ console.log(root);
 export default {
   data() {
     return {
-      codeText: "获取",
+      codeText: "获取验证码",
       disabledCodeBtn: true,
       token: "",
       mobile:"",//手机号
@@ -103,7 +117,7 @@ export default {
     async sendVerifycode() {
       console.log(1);
       let params = {
-        mobileNo: this.phone,
+        mobileNo: this.mobile,
         token: this.token,
       };
       let res = await getValidateCode(params);
@@ -141,33 +155,19 @@ export default {
     async goLogin() {
       let params;
       console.log(111);
-      if (this.loginType == 0) {
-        console.log(2222);
-        params = {
-          username: this.username,
-          password: this.password,
-          loginType: 0,
-        };
-      } else {
-        console.log(33333);
-        params = {
-          chatname: this.chatname,
-          mobile: this.mobile,
-          validateCode: this.validateCode,
-          wechatAccount:this.wechatAccount
-        };
-      }
+      params = {
+        chatname: this.chatname,
+        mobile: this.mobile,
+        validateCode: this.validateCode,
+        wechatAccount:this.wechatAccount,
+        token:this.token
+      };
       let res1 = await regist(params)
       console.log('res1',res1)
-    //   axios
-    //     .post(process.env.VUE_APP_BASE_URL + "/mall/small/h5/regist", { params })
-    //     .then(function (response) {
-    //       console.log(response);
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-      // 这里写登录的接口
+      if(res1.data.code == 0){
+        console.log('申请提交，跳转到登录页面')
+        this.$router.push('/Login');
+      }
     },
     getValidateCode() {},
     goLoginPage(){
@@ -215,6 +215,14 @@ export default {
       overflow: hidden;
       position: relative;
       top: -20px;
+  }
+  .my-swipe{
+     .img1-box img {
+      width: 100%;
+    }
+    .img2-box img {
+      width: 100%;
+    }
   }
 }
 </style>

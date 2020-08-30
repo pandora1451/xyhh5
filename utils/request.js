@@ -14,15 +14,15 @@ export function getWechatCode(params) {
   })
 }
 export function login(params) {
-  console.log('login123')
+  console.log('login1234')
   return Service({
     url: '/mall/small/h5/login',
-    params: app.toMyJson(params)
+    params: params
   })
 }
 export function regist(params) {
   return Service({
     url: '/mall/small/h5/regist',
-    params: app.toMyJson(params)
+    params: params
   })
 }

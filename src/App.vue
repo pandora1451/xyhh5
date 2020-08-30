@@ -14,7 +14,7 @@
 	@import url("assets/css/common.css");
 	html{
 		height: 100%;
-		background-color: #f3f8fb;
+		background-color: #ffffff;
 	}
 	#app {
 		font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -22,6 +22,6 @@
 		-moz-osx-font-smoothing: grayscale;
 		text-align: center;
 		color: #2c3e50;
-		background-color: #f3f8fb;
+		background-color: #ffffff;
 	}
 </style>

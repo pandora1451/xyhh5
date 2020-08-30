@@ -36,6 +36,9 @@
 				hasToken:false
 			}
 		},
+		beforeCreate(){
+			app.storage.removeAll()
+		},
 		created() {
 			this.login()
 		},
