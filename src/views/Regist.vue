@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <!-- <div class="img-wrapper">
-      <img src="../assets/img/a.png" alt />
-    </div> -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
         <div class="img1-box">
@@ -18,7 +15,7 @@
     <div class="login-box">
     </div>
     <div class="container-form">
-      <van-form @submit="onSubmit">
+      <van-form>
         <van-field
           v-model="mobile"
           name="手机号"
@@ -36,7 +33,9 @@
             :disabled="!disabledCodeBtn"
           >{{codeText}}</van-button>
         </van-field>
-        <van-field
+      </van-form>
+      <van-form>
+         <van-field
           v-model="validateCode"
           type="number"
           name="验证码"
@@ -62,10 +61,10 @@
           :rules="[{ required: true, message: '请填写微信号' }]"
         />
         <div style="margin: 16px;">
-          <van-button round block type="primary" native-type="submit" v-on:click="goLogin">提交注册信息</van-button>
+          <van-button round block type="primary" native-type="submit" v-on:click="goLogin">提交入驻</van-button>
         </div>
         <div style="margin: 16px;">
-          <van-button round block type="info" v-on:click="goLoginPage">已有账号去登录</van-button>
+          <van-button round block type="info" v-on:click="goLoginPage">账号登录</van-button>
         </div>
       </van-form>
     </div>
@@ -76,7 +75,7 @@ import axios from "axios";
 import Vue from "vue";
 import router from "../router";
 import { app } from "../../utils/app";
-import { Form, Field, Button, CellGroup, Toast,Swipe,SwipeItem } from "vant";
+import { Form, Field, Button, CellGroup, Toast,Swipe,SwipeItem ,Dialog} from "vant";
 import { getValidateCode, regist } from "../../utils/request";
 Vue.use(Swipe);
 Vue.use(SwipeItem);
@@ -116,21 +115,26 @@ export default {
     // 向后台要验证码方法
     async sendVerifycode() {
       console.log(1);
-      let params = {
-        mobileNo: this.mobile,
-        token: this.token,
-      };
-      let res = await getValidateCode(params);
-      //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
-      if (res) {
-        this.countDown(60);
+      if(this.verifyPhone()){
+        Toast(this.verifyPhone())
+      }else{
+        let params = {
+          mobileNo: this.mobile,
+          token: this.token,
+        };
+        let res = await getValidateCode(params);
+        //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
+        if (res) {
+          this.countDown(60);
+          Toast(res.data.message)
+        }
       }
     },
     // 表单校验方法
     verifyPhone() {
-      if (!this.username) {
+      if (!this.mobile) {
         return "请输入手机号";
-      } else if (this.username.length !== 11) {
+      } else if (this.mobile.length !== 11) {
         return "请输入11位手机号";
       } else {
         return false;
@@ -140,7 +144,7 @@ export default {
     countDown(time) {
       if (time === 0) {
         this.disabledCodeBtn = true;
-        this.codeText = "获取";
+        this.codeText = "获取验证码";
         return;
       } else {
         this.disabledCodeBtn = false;
@@ -166,7 +170,13 @@ export default {
       console.log('res1',res1)
       if(res1.data.code == 0){
         console.log('申请提交，跳转到登录页面')
-        this.$router.push('/Login');
+        Dialog.alert({ message: res1.data.msg }).then(()=>{
+          this.$router.push('/Login');
+        });
+      }else{
+        Dialog.alert({ message: res1.data.msg }).then(()=>{
+
+        });
       }
     },
     getValidateCode() {},

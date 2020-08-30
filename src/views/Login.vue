@@ -67,7 +67,9 @@
               :disabled="!disabledCodeBtn"
             >{{codeText}}</van-button>
           </van-field>
-          <van-field
+        </van-form>
+        <van-form>
+           <van-field
             v-model="verifycode"
             type="password"
             name="验证码"
@@ -140,21 +142,26 @@ export default {
     // 向后台要验证码方法
     async sendVerifycode() {
       console.log(1);
-      let params = {
-        mobileNo: this.phone,
-        token: this.token,
-      };
-      let res = await getValidateCode(params);
-      //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
-      if (res) {
-        this.countDown(60);
+      if(this.verifyPhone()){
+        Toast(this.verifyPhone())
+      }else{
+        let params = {
+          mobileNo: this.phone,
+          token: this.token,
+        };
+        let res = await getValidateCode(params);
+        //  用手机号向后台换取验证码，发送成功则开始调用倒计时分方法
+        if (res) {
+          this.countDown(60);
+          Toast(res.data.message)
+        }
       }
     },
     // 表单校验方法
     verifyPhone() {
-      if (!this.username) {
+      if (!this.phone) {
         return "请输入手机号";
-      } else if (this.username.length !== 11) {
+      } else if (this.phone.length !== 11) {
         return "请输入11位手机号";
       } else {
         return false;
@@ -164,7 +171,7 @@ export default {
     countDown(time) {
       if (time === 0) {
         this.disabledCodeBtn = true;
-        this.codeText = "获取";
+        this.codeText = "获取验证码";
         return;
       } else {
         this.disabledCodeBtn = false;
@@ -203,7 +210,7 @@ export default {
               console.log('用户确认')
             });
           }else if(res1.data.state == 1){
-            this.showPass = true
+            this.show = true
           }else{
             Dialog.alert({
               message: res1.data.content
