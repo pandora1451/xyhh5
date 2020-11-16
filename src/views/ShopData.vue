@@ -1,7 +1,9 @@
 <template>
 	<div class="container">
 		<div class="nav-bar">头</div>
-		<div class="data-wrapper">中</div>
+		<div class="data-wrapper">
+			<button @click="clicked">vuex</button>
+		</div>
 		<div class="ad">下</div>
 	</div>
 </template>
@@ -22,7 +24,9 @@
 		watch: {
 		},
 		methods: {
-			
+			clicked(){
+				console.log(1234)
+			}
 		}
 	}
 </script>
