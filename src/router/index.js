@@ -38,7 +38,16 @@ const routes = [{
 		path:'/regist',
 		name:'regist',
 		component: ()=>import('../views/Regist.vue')
-	}
+	},
+	{
+		path:'/ShopLogin',
+		name:'ShopLogin',
+		component: ()=>import('../views/ShopLogin.vue')
+	},{
+		path: '/ShopData',
+		name: 'ShopData',
+		component:() => import('../views/ShopData.vue')
+	},
 ]
 
 const router = new VueRouter({

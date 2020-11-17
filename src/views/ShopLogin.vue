@@ -1,7 +1,7 @@
 <template>
   <div class="container1">
     <div class="img-wrapper">
-      <img src="../assets/img/d.png" alt />
+      <!-- <img src="../assets/img/d.png" alt /> -->
     </div>
     <div class="login-box">
       <div class="tags">
@@ -99,10 +99,12 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
+import Vuex from 'vuex'
 import router from "../router";
 import { app } from "../../utils/app";
 import { Form, Field, Button, CellGroup, Toast,Dialog,Overlay } from "vant";
-import { getValidateCode, login } from "../../utils/request";
+import { getValidateCode, login,shopLogin } from "../../utils/request";
+Vue.use(Vuex)
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
@@ -130,6 +132,8 @@ export default {
     // app.storage.set("token", "bd73938c37ec421fa545e530990d4cf4");
     let t = await app.storage.get("token");
     this.token = t;
+		
+		// console.log("test store",this.$store);
   },
   methods: {
     onSubmit(values) {
@@ -199,25 +203,21 @@ export default {
           loginType: 1,
         };
       }
-      let res1 = await login(params)
+      let res1 = await shopLogin(params)
       console.log('res1',res1,res1.data.msg)
-      if(res1.status == 200){
+      if(res1.status == 200){//登录成功
         if(res1.data.code == 0){
-          if(res1.data.state == 0){
-            Dialog.alert({
-              message: res1.data.content
-            }).then(() => {
-              console.log('用户确认')
-            });
-          }else if(res1.data.state == 1){
-            this.show = true
-          }else{
-            Dialog.alert({
-              message: res1.data.content
-            }).then(() => {
-              console.log('用户确认')
-            });
-          }
+          let token = res1.data.usertoken
+					let userInfo = res1.data.user
+					let shopInfo = res1.data.shop
+					this.$store.commit('increment')
+					this.$store.commit('setToken',token)
+					this.$store.commit('setUserInfo',userInfo)
+					this.$store.commit('setShopInfo',shopInfo)
+					app.storage.set("token", token)
+					app.storage.set("userInfo", userInfo)
+					app.storage.set("shopInfo", shopInfo)
+					this.$router.push({path:'/ShopData'})
         }else{
           Dialog.alert({
             message: res1.data.msg

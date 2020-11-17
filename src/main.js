@@ -1,19 +1,35 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import Vuex from 'vuex'
 import axios from 'axios'
 import less from 'less'
+import store from './store.js'
 // import jquery from "jquery"
 
 // import axios from 'axios'
+Vue.use(Vuex)
 Vue.use(less)
 // Vue.use(axios);
 
 // Vue.prototype.$ajax = axios
+Vue.prototype.$axios=axios
 Vue.config.devtools = true;
 Vue.config.productionTip = false
 
+// const store = new Vuex.Store({
+// 	  state: {
+// 	    count: 0
+// 	  },
+// 	  mutations: {
+// 	    increment (state) {
+// 	      state.count++
+// 	    }
+// 	  }
+// 	})
+
 new Vue({
 	router,
+	store: store,
   render: h => h(App),
 }).$mount('#app')

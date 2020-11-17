@@ -2,14 +2,21 @@
 	<div class="container">
 		<div class="nav-bar">头</div>
 		<div class="data-wrapper">
-			<button @click="clicked">vuex</button>
+			<button @click="clicked1">vuex1</button>
+			<button @click="clicked2">vuex2</button>
+			<button @click="clicked3">vuex3</button>
 		</div>
 		<div class="ad">下</div>
 	</div>
 </template>
 <script>
-	// @ is an alias to /src
+	import {indexData} from "../../utils/request";
+	import Vue from 'vue'
+	import Vuex from 'vuex'
 	
+	Vue.use(Vuex)
+	
+	// @ is an alias to /src
 
 	export default {
 		name: 'ShopData',
@@ -19,47 +26,56 @@
 			return {
 			}
 		},
-		created() {
+		beforeCreate() {
+			console.log('beforeCreate')
+		},
+		async created() {
+			console.log('created')
+			let token = this.$store.state.token
+			if(token){
+				
+			}
+			console.log(token)
+			let res = indexData({usertoken:token})
+			console.log('res',res)
+		},
+		beforeMount() {
+			console.log('beforeMount')
+		},
+		mounted() {
+			console.log('mounted')
+		},
+		beforeUpdate() {
+			console.log('beforeUpdate')
+		},
+		updated() {
+			console.log('updated')
+		},
+		beforeDestroy() {
+			console.log('beforeDestroy')
+		},
+		destroyed() {
+			console.log('destroyed')
 		},
 		watch: {
 		},
 		methods: {
-			clicked(){
-				console.log(1234)
+			clicked1(){
+				console.log(this.$store.state.token)
+			},
+			clicked2(){
+				console.log(this.$store.state.userInfo)
+			},
+			clicked3(){
+				console.log(this.$store.state.shopInfo)
 			}
 		}
 	}
 </script>
 <style>
-	.banner-box {
-		display: block;
-	}
-
-	.banner-box img {
-		width: 100%;
-	}
-
-	.goods-container {
-		padding: 0.625rem 0.55rem;
-		display: flex;
-		display: -webkit-flex;
-		/* Safari */
-		flex-wrap: wrap;
-		justify-content: space-between;
-	}
-
-	.goods-container li {
-		width: 49%;
-		display: block;
-		margin: 0.25rem 0;
-		box-shadow: 0px 0px 8px #70a6de;
-	}
-	.banner-bottom-box{
-		width: 100%;
-		min-height: 100px;
-		padding-bottom: 1rem;
-	}
-	.banner-bottom-box img{
-		width: 100%;
+	.data-wrapper button{
+		width: 12.5rem;
+		height: 3.125rem;
+		margin: 0.625rem;
 	}
 </style>

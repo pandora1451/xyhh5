@@ -5,16 +5,20 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    error: null
+		token:'',
+		userInfo:'',
+		shopInfo:''
   },
   mutations: {
-    setError: (state, message) => {
-      if (message) {
-        state.error = { message }
-      } else {
-        state.error = null
-      }
-    }
+		setUserInfo(state,info){
+			state.userInfo = info
+		},
+		setShopInfo(state,info){
+			state.shopInfo = info
+		},
+		setToken(state,info){
+			state.token = info
+		}
   }
 })
 
