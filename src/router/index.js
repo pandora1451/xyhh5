@@ -11,7 +11,6 @@ const routes = [{
 	},{
 		path: '/Home',
 		name: 'Home',
-		// component: Home
 		component:() => import('../views/Home.vue')
 	},
 	{
@@ -47,7 +46,11 @@ const routes = [{
 		path: '/ShopData',
 		name: 'ShopData',
 		component:() => import('../views/ShopData.vue')
-	},
+	},{
+		path: '/ShopOrderList',
+		name: 'ShopOrderList',
+		component:() => import('../views/ShopOrderList.vue')
+	}
 ]
 
 const router = new VueRouter({

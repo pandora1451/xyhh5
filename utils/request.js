@@ -55,3 +55,10 @@ export function indexData(params){
 	  params: params
 	})
 }
+//订单列表
+export function getOrderList(params){
+	return ServiceGet({
+	  url: '/sshop/orderList',
+	  params: params
+	})
+}
