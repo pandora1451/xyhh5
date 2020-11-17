@@ -33,11 +33,12 @@
 			console.log('created')
 			let token = this.$store.state.token
 			if(token){
-				
+				console.log(token)
+				let res = indexData({usertoken:token})
+				console.log('res',res)
+			}else{
+				this.$router.push({path:'/ShopLogin'})
 			}
-			console.log(token)
-			let res = indexData({usertoken:token})
-			console.log('res',res)
 		},
 		beforeMount() {
 			console.log('beforeMount')
