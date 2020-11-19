@@ -62,3 +62,24 @@ export function getOrderList(params){
 	  params: params
 	})
 }
+//每日财务详情
+export function getDayFinanceList(params){
+	return ServiceGet({
+	  url: '/sshop/dayFinanceList',
+	  params: params
+	})
+}
+//月度财务列表
+export function getMonthFinanceList(params){
+	return ServiceGet({
+	  url: '/sshop/monthFinanceList',
+	  params: params
+	})
+}
+//提现申请
+export function withDraw(params){
+	return ServiceGet({
+	  url: '/sshop/user/withdraw',
+	  params: params
+	})
+}

@@ -42,6 +42,11 @@ const routes = [{
 		path:'/ShopLogin',
 		name:'ShopLogin',
 		component: ()=>import('../views/ShopLogin.vue')
+	},
+	{
+		path:'/ShopRegist',
+		name:'ShopRegist',
+		component: ()=>import('../views/ShopRegist.vue')
 	},{
 		path: '/ShopData',
 		name: 'ShopData',
@@ -54,6 +59,14 @@ const routes = [{
 		path: '/ShopSet',
 		name: 'ShopSet',
 		component:() => import('../views/ShopSet.vue')
+	},{
+		path: '/ShopFriends',
+		name: 'ShopFriends',
+		component:() => import('../views/ShopFriends.vue')
+	},{
+		path: '/ShopFinance',
+		name: 'ShopFinance',
+		component:() => import('../views/ShopFinance.vue')
 	}
 ]
 

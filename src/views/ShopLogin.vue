@@ -1,7 +1,7 @@
 <template>
   <div class="container1">
-    <div class="img-wrapper">
-      <!-- <img src="../assets/img/d.png" alt /> -->
+    <div v-if="!isCovertMode" class="img-wrapper">
+      <img src="../assets/img/d.png"/>
     </div>
     <div class="login-box">
       <div class="tags">
@@ -125,7 +125,8 @@ export default {
       codeText: "获取验证码",
       disabledCodeBtn: true,
       token: "",
-      show:false
+      show:false,
+			isCovertMode:this.$isCovertMode,
     };
   },
   async created() {

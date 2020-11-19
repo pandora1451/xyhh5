@@ -1,3 +1,4 @@
+import {isCovertMode} from '../utils/const.js'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -5,8 +6,9 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import less from 'less'
 import store from './store.js'
-// import jquery from "jquery"
-
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+Vue.prototype.$isCovertMode = isCovertMode
 // import axios from 'axios'
 Vue.use(Vuex)
 Vue.use(less)
@@ -27,7 +29,6 @@ Vue.config.productionTip = false
 // 	    }
 // 	  }
 // 	})
-
 new Vue({
 	router,
 	store: store,
