@@ -332,7 +332,7 @@ app.loadWechat = function (code, type, id, orgId) {
                 window.location.href = BASE_URL+'/Regist';
             } else if (type == 'shop') {
                console.log('shop')
-               window.location.href = BASE_URL+'/ShopRegist';
+               window.location.href = BASE_URL+'/ShopLogin';
             }else{
 							console.log('都不是')
 						}

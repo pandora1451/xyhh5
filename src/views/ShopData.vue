@@ -45,10 +45,10 @@
 		},
 		async created() {
 			console.log('isCovertMode:',this.$isCovertMode)
-			let token = this.$store.state.token || app.storage.get("token")
-			if(token){
-				console.log(token)
-				let res = await indexData({usertoken:token})
+			let shopToken = this.$store.state.shopToken || app.storage.get("shopToken")
+			if(shopToken){
+				console.log(shopToken)
+				let res = await indexData({usertoken:shopToken})
 				this.saleList = res.data.saleList
 				this.todayAmount = res.data.todayAmount
 				this.todayCount = res.data.todayCount

@@ -7,7 +7,8 @@ const store = new Vuex.Store({
   state: {
 		token:'',
 		userInfo:'',
-		shopInfo:''
+		shopInfo:'',
+		shopToken:''
   },
   mutations: {
 		setUserInfo(state,info){
@@ -16,8 +17,8 @@ const store = new Vuex.Store({
 		setShopInfo(state,info){
 			state.shopInfo = info
 		},
-		setToken(state,info){
-			state.token = info
+		setShopToken(state,info){
+			state.shopToken = info
 		}
   }
 })

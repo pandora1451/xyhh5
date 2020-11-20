@@ -208,13 +208,13 @@ export default {
       console.log('res1',res1,res1.data.msg)
       if(res1.status == 200){//登录成功
         if(res1.data.code == 0){
-          let token = res1.data.usertoken
+          let shopToken = res1.data.usertoken
 					let userInfo = res1.data.user
 					let shopInfo = res1.data.shop
-					this.$store.commit('setToken',token)
+					this.$store.commit('setShopToken',shopToken)
 					this.$store.commit('setUserInfo',userInfo)
 					this.$store.commit('setShopInfo',shopInfo)
-					app.storage.set("token", token)
+					app.storage.set("shopToken", shopToken)
 					this.$router.push({path:'/ShopData'})
         }else{
           Dialog.alert({
