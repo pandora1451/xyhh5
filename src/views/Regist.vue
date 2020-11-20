@@ -61,7 +61,7 @@
           :rules="[{ required: true, message: '请填写微信号' }]"
         />
         <div style="margin: 16px;">
-          <van-button round block type="primary" native-type="submit" v-on:click="goLogin">提交入驻</van-button>
+          <van-button round block type="primary" native-type="submit" v-on:click="goRegist">提交入驻</van-button>
         </div>
         <div style="margin: 16px;">
           <van-button round block type="info" v-on:click="goLoginPage">账号登录</van-button>
@@ -155,8 +155,8 @@ export default {
         this.countDown(time);
       }, 1000);
     },
-    // 登录
-    async goLogin() {
+    // 注册
+    async goRegist() {
       let params;
       console.log(111);
       params = {
