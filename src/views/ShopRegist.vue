@@ -182,7 +182,7 @@ export default {
     },
     getValidateCode() {},
     goLoginPage(){
-        this.$router.push('/Login');
+        this.$router.push('/ShopLogin');
     }
   },
 };

@@ -47,6 +47,9 @@
               v-on:click="goLogin"
             >登录</van-button>
           </div>
+					<div style="margin: 16px;">
+					  <van-button round block type="info" v-on:click="goRegistPage">注册</van-button>
+					</div>
         </van-form>
       </template>
       <template v-else>
@@ -235,7 +238,10 @@ export default {
     overlayClick(){
       console.log(1)
       this.show = false
-    }
+    },
+		goRegistPage(){
+			this.$router.push('/ShopRegist');
+		}
   },
 };
 </script>

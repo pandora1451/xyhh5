@@ -19,16 +19,6 @@ Vue.prototype.$axios=axios
 Vue.config.devtools = true;
 Vue.config.productionTip = false
 
-// const store = new Vuex.Store({
-// 	  state: {
-// 	    count: 0
-// 	  },
-// 	  mutations: {
-// 	    increment (state) {
-// 	      state.count++
-// 	    }
-// 	  }
-// 	})
 new Vue({
 	router,
 	store: store,
