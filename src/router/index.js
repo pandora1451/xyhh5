@@ -67,6 +67,10 @@ const routes = [{
 		path: '/ShopFinance',
 		name: 'ShopFinance',
 		component:() => import('../views/ShopFinance.vue')
+	},{
+		path: '/ShopJoin',
+		name: 'ShopJoin',
+		component:() => import('../views/ShopJoin.vue')
 	}
 ]
 

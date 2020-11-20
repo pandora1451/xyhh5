@@ -63,6 +63,7 @@
 				// } else {
 					var url = window.location.href;
 					if (url.indexOf('https://open.weixin.qq.com/connect/oauth2/authorize') == -1 && !query['code']) {
+						//不是授权页面，且没有code参数
 						window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6d4b592411ae15a0&redirect_uri=' +
 							url + '&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect';
 					} else {

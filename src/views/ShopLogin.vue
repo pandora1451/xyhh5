@@ -214,9 +214,7 @@ export default {
 					this.$store.commit('setToken',token)
 					this.$store.commit('setUserInfo',userInfo)
 					this.$store.commit('setShopInfo',shopInfo)
-					// app.storage.set("token", token)
-					// app.storage.set("userInfo", userInfo)
-					// app.storage.set("shopInfo", shopInfo)
+					app.storage.set("token", token)
 					this.$router.push({path:'/ShopData'})
         }else{
           Dialog.alert({

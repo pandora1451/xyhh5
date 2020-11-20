@@ -330,9 +330,12 @@ app.loadWechat = function (code, type, id, orgId) {
                 // this.hasToken = true
                 console.log('user')
                 window.location.href = BASE_URL+'/Regist';
-            } else {
-               
-            }
+            } else if (type == 'shop') {
+               console.log('shop')
+               window.location.href = BASE_URL+'/ShopRegist';
+            }else{
+							console.log('都不是')
+						}
         } else {
             alert(data.message);
         }
