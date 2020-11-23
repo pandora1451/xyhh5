@@ -10,7 +10,7 @@
 	</div>
 </template>
 <script>
-	import {indexData,getOrderList} from "../../utils/request";
+	import {indexData,getOrderList} from "../../utils/api";
 	import Vue from 'vue'
 	import Vuex from 'vuex'
 	

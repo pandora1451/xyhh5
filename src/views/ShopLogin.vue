@@ -106,7 +106,7 @@ import Vuex from 'vuex'
 import router from "../router";
 import { app } from "../../utils/app";
 import { Form, Field, Button, CellGroup, Toast,Dialog,Overlay } from "vant";
-import { getValidateCode, login,shopLogin } from "../../utils/request";
+import { getValidateCode, login,shopLogin } from "../../utils/api";
 Vue.use(Vuex)
 Vue.use(Form);
 Vue.use(Field);

@@ -21,7 +21,7 @@
 	import Vue from 'vue'
 	import Vuex from 'vuex'
 	import { app } from "../../utils/app";
-	import {indexData,getOrderList} from "../../utils/request";
+	import {indexData,getOrderList} from "../../utils/api";
 	Vue.use(Vuex)
 	
 	// @ is an alias to /src102.42

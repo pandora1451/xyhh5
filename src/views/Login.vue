@@ -102,7 +102,7 @@ import Vue from "vue";
 import router from "../router";
 import { app } from "../../utils/app";
 import { Form, Field, Button, CellGroup, Toast,Dialog,Overlay } from "vant";
-import { getValidateCode, login } from "../../utils/request";
+import { getValidateCode, login } from "../../utils/api";
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
