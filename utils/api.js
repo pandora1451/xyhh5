@@ -63,7 +63,7 @@ export function indexData(params){
 //订单列表
 export function getOrderList(params){
 	return ServiceGet({
-	  url: '/sshop/orderList',
+	  url: '/shop/sshop/orderList',
 	  params: params
 	})
 }
@@ -77,7 +77,7 @@ export function getDayFinanceList(params){
 //月度财务列表
 export function getMonthFinanceList(params){
 	return ServiceGet({
-	  url: '/sshop/monthFinanceList',
+	  url: '/shop/sshop/monthFinanceList',
 	  params: params
 	})
 }
@@ -123,3 +123,4 @@ export function updateShopPwd(params){
 	  params: params
 	})
 }
+//团队管理页面数据

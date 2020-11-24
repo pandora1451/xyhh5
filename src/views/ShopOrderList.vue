@@ -2,15 +2,13 @@
 	<div class="container">
 		<div class="nav-bar">头</div>
 		<div class="data-wrapper">
-			<button @click="clicked1">vuex1</button>
-			<button @click="clicked2">vuex2</button>
-			<button @click="clicked3">vuex3</button>
 		</div>
 		<div class="ad">下</div>
 	</div>
 </template>
 <script>
 	import {indexData,getOrderList} from "../../utils/api";
+	import { app } from "../../utils/app";
 	import Vue from 'vue'
 	import Vuex from 'vuex'
 	
@@ -24,51 +22,30 @@
 		},
 		data() {
 			return {
+				list:'',
+				shopToken:''
 			}
 		},
-		beforeCreate() {
-			console.log('beforeCreate')
-		},
-		async created() {
-			// console.log('created')
-			let token = this.$store.state.token
-			if(token){
-				console.log(token)
-				let res = await indexData({usertoken:token})
-				console.log('res',res)
-			}else{
-				this.$router.push({path:'/ShopLogin'})
-			}
-		},
-		beforeMount() {
-			console.log('beforeMount')
+		created() {
+			let shopToken = app.storage.get('shopToken')
+			this.shopToken = shopToken
+			console.log('shopToken:',this.shopToken)
+			this.getOrderList()
 		},
 		mounted() {
-			console.log('mounted')
-		},
-		beforeUpdate() {
-			console.log('beforeUpdate')
-		},
-		updated() {
-			console.log('updated')
-		},
-		beforeDestroy() {
-			console.log('beforeDestroy')
-		},
-		destroyed() {
-			console.log('destroyed')
 		},
 		watch: {
 		},
 		methods: {
-			clicked1(){
-				console.log(this.$store.state.token)
-			},
-			clicked2(){
-				console.log(this.$store.state.userInfo)
-			},
-			clicked3(){
-				console.log(this.$store.state.shopInfo)
+			async getOrderList(){
+				let params = {
+					limit:20,
+					offset:0,
+					searchDay:'2020-01-01',
+					usertoken:this.shopToken
+				}
+				let res = await getOrderList(params)
+				console.log(res)
 			}
 		}
 	}

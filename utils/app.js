@@ -75,7 +75,6 @@ app.checkToken = function () {
         return false;
     }
 };
-
 /*
  *    本地存储
  */
@@ -85,7 +84,6 @@ app.storage = {
     },
     get: function (key) {
         var strObj = localStorage.getItem(key);
-        console.log('get', strObj)
         return JSON.parse(strObj);
     },
     remove: function (key) {

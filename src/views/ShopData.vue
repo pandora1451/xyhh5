@@ -10,9 +10,10 @@
 				<div class="balance">3</div>
 			</div>
 			<div id="myChart" style="width: 100%;height: 300px;border: 1px solid #42B983;box-sizing: border-box;"></div>
-			<button @click="clicked1">vuex1</button>
-			<button @click="clicked2">vuex2</button>
-			<button @click="clicked3">vuex3</button>
+			<button @click="clicked1">dd</button>
+			<button @click="clicked2">td</button>
+			<button @click="clicked3">ye</button>
+			<button @click="clicked4">set</button>
 		</div>
 		<div class="ad">下</div>
 	</div>
@@ -81,14 +82,20 @@
 		},
 		methods: {
 			clicked1(){
-				console.log(this.$store.state.token)
+				// console.log(this.$store.state.token)
+				this.$router.push({path:'/ShopOrderList'})
 			},
 			clicked2(){
-				console.log(this.$store.state.userInfo)
-				this.$router.push({path:'/ShopSet'})
+				// console.log(this.$store.state.userInfo)
+				this.$router.push({path:'/ShopFriends'})
 			},
 			clicked3(){
-				console.log(this.$store.state.shopInfo)
+				// console.log(this.$store.state.shopInfo)
+				this.$router.push({path:'/ShopFinance'})
+			},
+			clicked4(){
+				// console.log(this.$store.state.userInfo)
+				this.$router.push({path:'/ShopSet'})
 			},
 			myEcharts(){
 			// 基于准备好的dom，初始化echarts实例
