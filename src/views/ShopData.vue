@@ -1,20 +1,17 @@
 <template>
 	<div :class="isCovertMode ? '' : 'container'">
-		<div class="nav-bar">头</div>
+		<NavBar/>
 		<div class="data-wrapper">
-			<div class="title">11111</div>
-			<div class="finance">222222</div>
+			<div class="title">{{time}}({{day}})销售金额</div>
+			<div class="finance">￥{{todayAmount}}</div>
 			<div class="data-group">
-				<div class="order">1</div>
-				<div class="group">2</div>
-				<div class="balance">3</div>
+				<div class="order" @click="clicked1">{{todayCount}}</div>
+				<div class="group" @click="clicked2">{{totalMember}}</div>
+				<div class="balance" @click="clicked3">{{remainAmount}}</div>
 			</div>
-			<div id="myChart" style="width: 100%;height: 300px;border: 1px solid #42B983;box-sizing: border-box;"></div>
-			<button @click="clicked1">dd</button>
-			<button @click="clicked2">td</button>
-			<button @click="clicked3">ye</button>
-			<button @click="clicked4">set</button>
 		</div>
+		<div v-if="!isCovertMode" id="myChart" style="width: 100%;height: 300px;border: 1px solid #42B983;box-sizing: border-box;"></div>
+		<button @click="clicked4">set</button>
 		<div class="ad">下</div>
 	</div>
 </template>
@@ -23,6 +20,7 @@
 	import Vuex from 'vuex'
 	import { app } from "../../utils/app";
 	import {indexData,getOrderList} from "../../utils/api";
+	import NavBar from '@/components/NavBar'
 	Vue.use(Vuex)
 	
 	// @ is an alias to /src102.42
@@ -30,6 +28,7 @@
 	export default {
 		name: 'ShopData',
 		components: {
+			NavBar
 		},
 		data() {
 			return {
@@ -38,11 +37,19 @@
 				todayAmount:'',
 				todayCount:'',
 				totalCount:'',
-				totalMember:''
+				totalMember:'',
+				remainAmount:'',
+				series:{
+					name: '销量',
+					type: 'bar',
+					data: []
+				},
+				xAxis:{
+					data: []
+				},
+				time:'',
+				day:''
 			}
-		},
-		beforeCreate() {
-			console.log('beforeCreate')
 		},
 		async created() {
 			console.log('isCovertMode:',this.$isCovertMode)
@@ -55,28 +62,33 @@
 				this.todayCount = res.data.todayCount
 				this.totalCount = res.data.totalCount
 				this.totalMember = res.data.totalMember
+				this.remainAmount = res.data.remainAmount
+				
+				let seriesData = []
+				let xAxisData = [] 
+				res.data.saleList.forEach(res=>{
+					seriesData.push(res.count)
+					xAxisData.push(res.displayDay)
+				})
+				console.log(seriesData)
+				this.series.data = seriesData
+				this.xAxis.data = xAxisData
+				// this.myEcharts();
+				this.day = this.getDay()
 			}else{
 				this.$router.push({path:'/ShopLogin'})
 			}
-		},
-		beforeMount() {
-			console.log('beforeMount')
+			
+			
+			let times = this.getTime()
+			this.time = times
+			console.log(times)
 		},
 		mounted() {
 			console.log('mounted')
-			// this.myEcharts();
-		},
-		beforeUpdate() {
-			console.log('beforeUpdate')
-		},
-		updated() {
-			console.log('updated')
-		},
-		beforeDestroy() {
-			console.log('beforeDestroy')
-		},
-		destroyed() {
-			console.log('destroyed')
+			// setTimeout(res=>{
+			// 	// this.myEcharts();
+			// },1500)
 		},
 		watch: {
 		},
@@ -104,33 +116,78 @@
 			// 指定图表的配置项和数据
 			var option = {
 				title: {
-					text: 'ECharts 入门示例'
+					text: '周销量'
 				},
 				tooltip: {},
 				legend: {
 					data:['销量']
 				},
-				xAxis: {
-					data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-				},
+				xAxis: this.xAxis,
 				yAxis: {},
-				series: [{
-					name: '销量',
-					type: 'bar',
-					data: [5, 20, 36, 10, 10, 20]
-				}]
+				series: [this.series]
 			};
-
+			console.log('option',option)
 			// 使用刚指定的配置项和数据显示图表。
 			myChart.setOption(option);
+			},
+			getTime(){
+			   var date=new Date();
+			   var Y= date.getFullYear() + '/';
+			   var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
+			   var D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate());
+			   return Y+M+D; 
+			},
+			getDay(){
+				let dayNo = new Date().getDay()
+				let res
+				switch (dayNo){
+					case 1:
+						res = '星期一'
+						break;
+					case 2:
+						res = '星期二'
+						break;
+					case 3:
+						res = '星期三'
+						break;
+					case 4:
+						res = '星期四'
+						break;
+					case 5:
+						res = '星期五'
+						break;
+					case 6:
+						res = '星期六'
+						break;
+					case 7:
+						res = '星期日'
+						break;
+					default:
+						break;
+				}
+				return res
 			}
 		}
 	}
 </script>
-<style>
+<style lang="scss">
+	$white:#ffffff;
+	$red1:#ff3366;
+	$black:#000000;
+	.data-wrapper{
+		color: $black;
+	}
 	.data-wrapper button{
 		width: 12.5rem;
 		height: 3.125rem;
 		margin: 0.625rem;
+	}
+	.data-group{
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+	}
+	#app{
+		min-height:100vh ;
 	}
 </style>

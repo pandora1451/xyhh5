@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<NavBar/>
 		<div class="nav-bar">头</div>
 		<div class="data-wrapper">
 		</div>
@@ -11,6 +12,7 @@
 	import { app } from "../../utils/app";
 	import Vue from 'vue'
 	import Vuex from 'vuex'
+	import NavBar from '@/components/NavBar'
 	
 	Vue.use(Vuex)
 	
@@ -19,6 +21,7 @@
 	export default {
 		name: 'ShopData',
 		components: {
+			NavBar
 		},
 		data() {
 			return {
