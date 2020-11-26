@@ -1,6 +1,13 @@
 <template>
 	<div :class="isCovertMode ? '' : 'container'">
-		<NavBar/>
+		<van-nav-bar
+		  title="标题"
+		  left-text="返回"
+		  right-text="按钮"
+		  left-arrow
+		  @click-left="onClickLeft"
+		  @click-right="onClickRight"
+		/>
 		<div class="data-wrapper">
 			<div class="title">{{time}}({{day}})销售金额</div>
 			<div class="finance">￥{{todayAmount}}</div>
@@ -11,8 +18,7 @@
 			</div>
 		</div>
 		<div v-if="!isCovertMode" id="myChart" style="width: 100%;height: 300px;border: 1px solid #42B983;box-sizing: border-box;"></div>
-		<button @click="clicked4">set</button>
-		<div class="ad">下</div>
+		<div class="ad">图</div>
 	</div>
 </template>
 <script>
@@ -20,7 +26,10 @@
 	import Vuex from 'vuex'
 	import { app } from "../../utils/app";
 	import {indexData,getOrderList} from "../../utils/api";
-	import NavBar from '@/components/NavBar'
+	// import NavBar from '@/components/NavBar'
+	import { NavBar } from 'vant';
+	
+	Vue.use(NavBar);
 	Vue.use(Vuex)
 	
 	// @ is an alias to /src102.42
@@ -28,7 +37,6 @@
 	export default {
 		name: 'ShopData',
 		components: {
-			NavBar
 		},
 		data() {
 			return {
@@ -107,6 +115,9 @@
 			},
 			clicked4(){
 				// console.log(this.$store.state.userInfo)
+				this.$router.push({path:'/ShopSet'})
+			},
+			onClickRight(){
 				this.$router.push({path:'/ShopSet'})
 			},
 			myEcharts(){
