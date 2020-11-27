@@ -3,8 +3,13 @@
 // var INTERFACE_URL = process.env.VUE_APP_BASE_URL;
 // console.log('INTERFACE_URL',INTERFACE_URL)
 
-import { Service, ServiceGet } from './service'
-import { app } from './app';
+import {
+	Service,
+	ServiceGet
+} from './service'
+import {
+	app
+} from './app';
 
 //申请验证码
 export function getValidateCode(params) {

@@ -1,204 +1,259 @@
 <template>
-	<div :class="isCovertMode ? '' : 'container'">
-		<van-nav-bar
-		  title="标题"
-		  left-text="返回"
-		  right-text="按钮"
-		  left-arrow
-		  @click-left="onClickLeft"
-		  @click-right="onClickRight"
-		/>
+	<div :class="isCovertMode ? 'container2' : 'container'">
+		<van-nav-bar title="标题" left-text="返回" right-text="按钮" fixed left-arrow @click-left="onClickLeft" @click-right="onClickRight" />
+		<van-pull-refresh head-height v-model="isLoading" @refresh="onRefresh">
+			<div class="pull-container">
+
 		<div class="data-wrapper">
-			<div class="title">{{time}}({{day}})销售金额</div>
-			<div class="finance">￥{{todayAmount}}</div>
+			<div v-if="!isCovertMode" class="title">{{ time }}({{ day }})销售金额</div>
+			<div class="finance">￥{{ todayAmount }}</div>
 			<div class="data-group">
-				<div class="order" @click="clicked1">{{todayCount}}</div>
-				<div class="group" @click="clicked2">{{totalMember}}</div>
-				<div class="balance" @click="clicked3">{{remainAmount}}</div>
+				<div class="order" @click="clicked1">{{ todayCount }}</div>
+				<div class="group" @click="clicked2">{{ totalMember }}</div>
+				<div class="balance" @click="clicked3">{{ remainAmount }}</div>
 			</div>
 		</div>
-		<div v-if="!isCovertMode" id="myChart" style="width: 100%;height: 300px;border: 1px solid #42B983;box-sizing: border-box;"></div>
+		<div v-if="!isCovertMode" id="myChart" style="
+        width: 100%;
+        height: 300px;
+        border: 1px solid #42b983;
+        box-sizing: border-box;
+      "></div>
 		<div class="ad">图</div>
+			<p>刷新次数: {{ count }}</p>
+			</div>
+		</van-pull-refresh>
 	</div>
 </template>
 <script>
-	import Vue from 'vue'
-	import Vuex from 'vuex'
-	import { app } from "../../utils/app";
-	import {indexData,getOrderList} from "../../utils/api";
+	import Vue from "vue";
+	import Vuex from "vuex";
+	import {
+		app
+	} from "../../utils/app";
+	import {
+		indexData,
+		getOrderList
+	} from "../../utils/api";
 	// import NavBar from '@/components/NavBar'
-	import { NavBar } from 'vant';
-	
+	import {
+		NavBar,
+		PullRefresh
+	} from "vant";
+
+	Vue.use(PullRefresh);
 	Vue.use(NavBar);
-	Vue.use(Vuex)
-	
+	Vue.use(Vuex);
+
 	// @ is an alias to /src102.42
 
 	export default {
-		name: 'ShopData',
-		components: {
-		},
+		name: "ShopData",
+		components: {},
 		data() {
 			return {
-				isCovertMode:this.$isCovertMode,
-				saleList:'',
-				todayAmount:'',
-				todayCount:'',
-				totalCount:'',
-				totalMember:'',
-				remainAmount:'',
-				series:{
-					name: '销量',
-					type: 'bar',
-					data: []
+				isCovertMode: this.$isCovertMode,
+				saleList: "",
+				todayAmount: "",
+				todayCount: "",
+				totalCount: "",
+				totalMember: "",
+				remainAmount: "",
+				series: {
+					name: "销量",
+					type: "bar",
+					data: [],
 				},
-				xAxis:{
-					data: []
+				xAxis: {
+					data: [],
 				},
-				time:'',
-				day:''
-			}
+				time: "",
+				day: "",
+				count: 0,
+				isLoading: false,
+			};
 		},
-		async created() {
-			console.log('isCovertMode:',this.$isCovertMode)
-			let shopToken = this.$store.state.shopToken || app.storage.get("shopToken")
-			if(shopToken){
-				console.log(shopToken)
-				let res = await indexData({usertoken:shopToken})
-				this.saleList = res.data.saleList
-				this.todayAmount = res.data.todayAmount
-				this.todayCount = res.data.todayCount
-				this.totalCount = res.data.totalCount
-				this.totalMember = res.data.totalMember
-				this.remainAmount = res.data.remainAmount
-				
-				let seriesData = []
-				let xAxisData = [] 
-				res.data.saleList.forEach(res=>{
-					seriesData.push(res.count)
-					xAxisData.push(res.displayDay)
-				})
-				console.log(seriesData)
-				this.series.data = seriesData
-				this.xAxis.data = xAxisData
-				// this.myEcharts();
-				this.day = this.getDay()
-			}else{
-				this.$router.push({path:'/ShopLogin'})
-			}
-			
-			
-			let times = this.getTime()
-			this.time = times
-			console.log(times)
+		created() {
+			console.log("isCovertMode:", this.$isCovertMode);
+			this.indexData()
+
+			let times = this.getTime();
+			this.time = times;
+			console.log(times);
 		},
 		mounted() {
-			console.log('mounted')
+			console.log("mounted");
 			// setTimeout(res=>{
 			// 	// this.myEcharts();
 			// },1500)
 		},
-		watch: {
-		},
+		watch: {},
 		methods: {
-			clicked1(){
-				// console.log(this.$store.state.token)
-				this.$router.push({path:'/ShopOrderList'})
-			},
-			clicked2(){
-				// console.log(this.$store.state.userInfo)
-				this.$router.push({path:'/ShopFriends'})
-			},
-			clicked3(){
-				// console.log(this.$store.state.shopInfo)
-				this.$router.push({path:'/ShopFinance'})
-			},
-			clicked4(){
-				// console.log(this.$store.state.userInfo)
-				this.$router.push({path:'/ShopSet'})
-			},
-			onClickRight(){
-				this.$router.push({path:'/ShopSet'})
-			},
-			myEcharts(){
-			// 基于准备好的dom，初始化echarts实例
-			var myChart = this.$echarts.init(document.getElementById('myChart'));
+			async indexData(){
+				let shopToken = this.$store.state.shopToken || app.storage.get("shopToken");
+				if (shopToken) {
+					console.log(shopToken);
+					let res = await indexData({
+						usertoken: shopToken
+					});
+					this.saleList = res.data.saleList;
+					this.todayAmount = res.data.todayAmount;
+					this.todayCount = res.data.todayCount;
+					this.totalCount = res.data.totalCount;
+					this.totalMember = res.data.totalMember;
+					this.remainAmount = res.data.remainAmount;
 
-			// 指定图表的配置项和数据
-			var option = {
-				title: {
-					text: '周销量'
-				},
-				tooltip: {},
-				legend: {
-					data:['销量']
-				},
-				xAxis: this.xAxis,
-				yAxis: {},
-				series: [this.series]
-			};
-			console.log('option',option)
-			// 使用刚指定的配置项和数据显示图表。
-			myChart.setOption(option);
+					let seriesData = [];
+					let xAxisData = [];
+					res.data.saleList.forEach((res) => {
+						seriesData.push(res.count);
+						xAxisData.push(res.displayDay);
+					});
+					this.series.data = seriesData;
+					this.xAxis.data = xAxisData;
+					// this.myEcharts();
+					this.day = this.getDay();
+				} else {
+					this.$router.push({
+						path: "/ShopLogin"
+					});
+				}
 			},
-			getTime(){
-			   var date=new Date();
-			   var Y= date.getFullYear() + '/';
-			   var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
-			   var D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate());
-			   return Y+M+D; 
+			clicked1() {
+				// console.log(this.$store.state.token)
+				this.$router.push({
+					path: "/ShopOrderList"
+				});
 			},
-			getDay(){
-				let dayNo = new Date().getDay()
-				let res
-				switch (dayNo){
+			clicked2() {
+				// console.log(this.$store.state.userInfo)
+				this.$router.push({
+					path: "/ShopFriends"
+				});
+			},
+			clicked3() {
+				// console.log(this.$store.state.shopInfo)
+				this.$router.push({
+					path: "/ShopFinance"
+				});
+			},
+			clicked4() {
+				// console.log(this.$store.state.userInfo)
+				this.$router.push({
+					path: "/ShopSet"
+				});
+			},
+			onClickRight() {
+				this.$router.push({
+					path: "/ShopSet"
+				});
+			},
+			myEcharts() {
+				// 基于准备好的dom，初始化echarts实例
+				var myChart = this.$echarts.init(document.getElementById("myChart"));
+
+				// 指定图表的配置项和数据
+				var option = {
+					title: {
+						text: "周销量",
+					},
+					tooltip: {},
+					legend: {
+						data: ["销量"],
+					},
+					xAxis: this.xAxis,
+					yAxis: {},
+					series: [this.series],
+				};
+				console.log("option", option);
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
+			getTime() {
+				var date = new Date();
+				var Y = date.getFullYear() + "/";
+				var M =
+					(date.getMonth() + 1 < 10 ?
+						"0" + (date.getMonth() + 1) :
+						date.getMonth() + 1) + "/";
+				var D = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+				return Y + M + D;
+			},
+			getDay() {
+				let dayNo = new Date().getDay();
+				let res;
+				switch (dayNo) {
 					case 1:
-						res = '星期一'
+						res = "星期一";
 						break;
 					case 2:
-						res = '星期二'
+						res = "星期二";
 						break;
 					case 3:
-						res = '星期三'
+						res = "星期三";
 						break;
 					case 4:
-						res = '星期四'
+						res = "星期四";
 						break;
 					case 5:
-						res = '星期五'
+						res = "星期五";
 						break;
 					case 6:
-						res = '星期六'
+						res = "星期六";
 						break;
 					case 7:
-						res = '星期日'
+						res = "星期日";
 						break;
 					default:
 						break;
 				}
-				return res
+				return res;
+			},
+			onRefresh() {
+				this.indexData()
+				setTimeout(() => {
+					console.log('刷新成功');
+					this.isLoading = false;
+					this.count++;
+				}, 1000);
+			},
+			onClickLeft(){
+				this.$router.back();
 			}
-		}
-	}
+		},
+	};
 </script>
 <style lang="scss">
-	$white:#ffffff;
-	$red1:#ff3366;
-	$black:#000000;
-	.data-wrapper{
+	$white: #ffffff;
+	$red1: #ff3366;
+	$black: #000000;
+
+	.data-wrapper {
 		color: $black;
 	}
-	.data-wrapper button{
+
+	.data-wrapper button {
 		width: 12.5rem;
 		height: 3.125rem;
 		margin: 0.625rem;
 	}
-	.data-group{
+
+	.data-group {
 		display: flex;
 		justify-content: space-between;
 		padding: 10px;
 	}
-	#app{
-		min-height:100vh ;
+
+	#app {
+		min-height: 100vh;
+	}
+	.container2{
+		padding-top: 46px;
+	}
+	.ad{
+		min-height: 300px;
+	}
+	.pull-container{
+		min-height: calc(100vh - 46px);
 	}
 </style>
