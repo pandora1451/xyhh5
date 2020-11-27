@@ -12,7 +12,6 @@
 	import { app } from "../../utils/app";
 	import Vue from 'vue'
 	import Vuex from 'vuex'
-	import NavBar from '@/components/NavBar'
 	
 	Vue.use(Vuex)
 	

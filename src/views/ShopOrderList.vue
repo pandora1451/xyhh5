@@ -13,7 +13,16 @@
         <button @click="show = true">选日期</button>
       </div>
     </div>
-    <div class="data-wrapper">列表</div>
+    <div class="data-wrapper">
+      <OrderItem v-for="item in orderList" :key="item.index" 
+      :wechatName="item.wechatName"
+      :custMobile="item.custMobile"
+      :payType="item.payType"
+      :totalprice="item.totalprice"
+      :payTime="item.payTime"
+      :ordersn="item.ordersn"
+      />
+    </div>
     <!-- <van-calendar v-model="show" @confirm="onConfirm" :min-date="minDate"/> -->
     <div v-if="show" class="pick-box">
       <van-datetime-picker
@@ -30,7 +39,8 @@
   </div>
 </template>
 <script>
-import {getOrderList } from "../../utils/api";
+import OrderItem from "@/components/OrderItem.vue";
+import { getOrderList } from "../../utils/api";
 import { app } from "../../utils/app";
 import { NavBar, DatetimePicker } from "vant";
 import Vue from "vue";
@@ -44,7 +54,7 @@ Vue.use(Vuex);
 
 export default {
   name: "ShopData",
-  components: {},
+  components: {OrderItem},
   data() {
     return {
       orderList: "",
