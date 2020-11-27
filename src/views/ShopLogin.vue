@@ -48,7 +48,7 @@
             >登录</van-button>
           </div>
 					<div style="margin: 16px;">
-					  <van-button round block type="info" v-on:click="goRegistPage">注册</van-button>
+            <van-button round block type="info" v-on:click="goRegistPage">注册</van-button>
 					</div>
         </van-form>
       </template>
@@ -100,13 +100,11 @@
   
 </template>
 <script>
-import axios from "axios";
 import Vue from "vue";
 import Vuex from 'vuex'
-import router from "../router";
 import { app } from "../../utils/app";
 import { Form, Field, Button, CellGroup, Toast,Dialog,Overlay } from "vant";
-import { getValidateCode, login,shopLogin } from "../../utils/api";
+import { getValidateCode,shopLogin } from "../../utils/api";
 Vue.use(Vuex)
 Vue.use(Form);
 Vue.use(Field);

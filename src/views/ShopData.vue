@@ -32,8 +32,7 @@
 		app
 	} from "../../utils/app";
 	import {
-		indexData,
-		getOrderList
+		indexData
 	} from "../../utils/api";
 	// import NavBar from '@/components/NavBar'
 	import {

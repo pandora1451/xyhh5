@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import { indexData, getOrderList } from "../../utils/api";
+import {getOrderList } from "../../utils/api";
 import { app } from "../../utils/app";
 import { NavBar, DatetimePicker } from "vant";
 import Vue from "vue";
