@@ -17,9 +17,9 @@
           </div>
           <div class="finance">￥{{ todayAmount }}</div>
           <div class="data-group">
-            <div class="order" @click="clicked1">{{ todayCount }}</div>
-            <div class="group" @click="clicked2">{{ totalMember }}</div>
-            <div class="balance" @click="clicked3">{{ remainAmount }}</div>
+            <div class="order data-item" @click="clicked1">{{ todayCount }}</div>
+            <div class="group data-item" @click="clicked2">{{ totalMember }}</div>
+            <div class="balance data-item" @click="clicked3">{{ remainAmount }}</div>
           </div>
         </div>
         <div
@@ -248,6 +248,12 @@ $black: #000000;
   display: flex;
   justify-content: space-between;
   padding: 10px;
+	.data-item{
+		min-width: 30%;
+		text-align: center;
+		height: 4rem;
+		line-height: 4rem;
+	}
 }
 
 #app {

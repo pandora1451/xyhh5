@@ -1,6 +1,11 @@
 <template>
 	<div class="container">
-		<div class="nav-bar">头</div>
+		<van-nav-bar
+		  title="标题"
+		  left-text="返回"
+		  left-arrow
+		  @click-left="onClickLeft"
+		/>
 		<div class="data-wrapper">
 		</div>
 		<div class="ad">下</div>
@@ -9,9 +14,10 @@
 <script>
 	import {indexData,getOrderList} from "../../utils/api";
 	import { app } from "../../utils/app";
+	import { NavBar} from "vant";
 	import Vue from 'vue'
 	import Vuex from 'vuex'
-	
+	Vue.use(NavBar);
 	Vue.use(Vuex)
 	
 	// @ is an alias to /src
@@ -46,6 +52,9 @@
 				}
 				let res = await getOrderList(params)
 				console.log(res)
+			},
+			onClickLeft(){
+				this.$router.back()
 			}
 		}
 	}
