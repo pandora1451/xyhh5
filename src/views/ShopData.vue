@@ -17,9 +17,18 @@
           </div>
           <div class="finance">￥{{ todayAmount }}</div>
           <div class="data-group">
-            <div class="order data-item" @click="clicked1">{{ todayCount }}</div>
-            <div class="group data-item" @click="clicked2">{{ totalMember }}</div>
-            <div class="balance data-item" @click="clicked3">{{ remainAmount }}</div>
+            <div class="order data-item" @click="clicked1">
+              <div class="count">{{ todayCount }}</div>
+              <div class="name">DDSL</div>
+            </div>
+            <div class="group data-item" @click="clicked2">
+              <div class="count">{{ totalMember }}</div>
+              <div class="name">TDRS</div>
+            </div>
+            <div class="balance data-item" @click="clicked3">
+              <div class="count">{{ remainAmount }}</div>
+              <div class="name">ZHYE</div>
+            </div>
           </div>
         </div>
         <div
@@ -234,16 +243,18 @@ $white: #ffffff;
 $red1: #ff3366;
 $black: #000000;
 
-.data-wrapper {
+.data-wrapper{
   color: $black;
+  .finance{
+    height: 2rem;
+    line-height: 2rem;
+  }
+  button {
+    width: 12.5rem;
+    height: 3.125rem;
+    margin: 0.625rem;
+  }
 }
-
-.data-wrapper button {
-  width: 12.5rem;
-  height: 3.125rem;
-  margin: 0.625rem;
-}
-
 .data-group {
   display: flex;
   justify-content: space-between;
@@ -253,6 +264,15 @@ $black: #000000;
 		text-align: center;
 		height: 4rem;
 		line-height: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .count{
+      height: 1rem;
+    }
+    .name{
+      height: 1rem;
+    }
 	}
 }
 
