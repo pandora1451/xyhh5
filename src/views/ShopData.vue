@@ -97,9 +97,11 @@ export default {
   },
   mounted() {
     console.log("mounted");
-    // setTimeout(res=>{
-    // 	// this.myEcharts();
-    // },1500)
+    if(!this.isCovertMode){
+      setTimeout(()=>{
+      this.myEcharts();
+    },1500)
+    }
   },
   watch: {},
   methods: {
