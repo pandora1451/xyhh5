@@ -1,9 +1,9 @@
 <template>
   <div :class="isCovertMode ? 'container2' : 'container'">
     <van-nav-bar
-      title="标题"
+      title="星店"
       left-text="返回"
-      right-text="按钮"
+      right-text="设置"
       fixed
       left-arrow
       @click-left="onClickLeft"
@@ -19,29 +19,23 @@
           <div class="data-group">
             <div class="order data-item" @click="clicked1">
               <div class="count">{{ todayCount }}</div>
-              <div class="name">DDSL</div>
+              <div class="name">订单数量</div>
             </div>
             <div class="group data-item" @click="clicked2">
               <div class="count">{{ totalMember }}</div>
-              <div class="name">TDRS</div>
+              <div class="name">团队数量</div>
             </div>
             <div class="balance data-item" @click="clicked3">
               <div class="count">{{ remainAmount }}</div>
-              <div class="name">ZHYE</div>
+              <div class="name">账号余额</div>
             </div>
           </div>
         </div>
         <div
           v-if="!isCovertMode"
           id="myChart"
-          style="
-            width: 100%;
-            height: 300px;
-            border: 1px solid #42b983;
-            box-sizing: border-box;
-          "
         ></div>
-        <div class="ad">图</div>
+        <div class="ad"></div>
         <p>刷新次数: {{ count }}</p>
       </div>
     </van-pull-refresh>
@@ -99,7 +93,7 @@ export default {
     console.log("mounted");
     if(!this.isCovertMode){
       setTimeout(()=>{
-      this.myEcharts();
+      // this.myEcharts();
     },1500)
     }
   },
@@ -174,6 +168,7 @@ export default {
         title: {
           text: "周销量",
         },
+        color:'#ff3366',
         tooltip: {},
         legend: {
           data: ["销量"],
@@ -181,6 +176,11 @@ export default {
         xAxis: this.xAxis,
         yAxis: {},
         series: [this.series],
+        textStyle:{
+          color:'#333333',
+          fontSize:18,
+          fontWeight:'Bold'
+        }
       };
       console.log("option", option);
       // 使用刚指定的配置项和数据显示图表。
@@ -247,6 +247,7 @@ $black: #000000;
 
 .data-wrapper{
   color: $black;
+  text-align: center;
   .finance{
     height: 2rem;
     line-height: 2rem;
@@ -289,5 +290,11 @@ $black: #000000;
 }
 .pull-container {
   min-height: calc(100vh - 46px);
+  margin-top: 46px;
+  #myChart{
+    width: 100%;
+    height: 300px;
+    box-sizing: border-box;
+  }
 }
 </style>
