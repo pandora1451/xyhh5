@@ -75,7 +75,7 @@ export function getOrderList(params) {
 //每日财务详情
 export function getDayFinanceList(params) {
 	return ServiceGet({
-		url: '/sshop/dayFinanceList',
+		url: '/shop/sshop/dayFinanceList',
 		params: params
 	})
 }

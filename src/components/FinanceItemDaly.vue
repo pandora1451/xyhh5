@@ -1,24 +1,24 @@
 <template>
-  <div class="item-finacnce" @click="goToDaly">
-    <div class="date">{{evenDate}}</div>
-    <div class="income">收入：{{ incomeOn }}</div>
-    <div class="pay">支出：{{ paymentOff }}</div>
-    <van-icon name="arrow" color="#666" />
+  <div class="item-finacnce">
+    <div class="left">
+      <div class="title">
+        <div class="type">支付方式{{ payType }}</div>
+        <div class="sn">{{ orderSn }}</div>
+      </div>
+      <div class="content">{{ createDate }}</div>
+    </div>
+    <div class="right">￥{{ amount }}</div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import { Icon } from "vant";
-
-Vue.use(Icon);
-
 export default {
-  name: "FinaceItem",
-  props:{
-      date:String,
-      incomeOn:Number,
-      paymentOff:Number
+  name: "FinaceItemDaly",
+  props: {
+    payType: String,
+    orderSn: Number,
+    date: String,
+    amount: Number,
   },
   computed: {
     evenDate: function () {
@@ -30,15 +30,11 @@ export default {
       return result;
     },
   },
- mounted() {
+  mounted() {
     //  console.log('111111',this.date)
     //  console.log(new Date(this.date).getFullYear())
   },
-  methods: {
-    goToDaly(){
-      this.$router.push({path:'/ShopFinanceDaly'})
-    }
-  },
+  methods: {},
 };
 </script>
 

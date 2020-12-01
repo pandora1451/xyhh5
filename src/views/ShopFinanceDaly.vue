@@ -7,20 +7,21 @@
       @click-left="onClickLeft"
     />
     <div class="data-wrapper">
-        <FinanceItem 
+        <FinanceItemDaly 
           v-for="item in list"
           :key="item.id"
-          :date = "item.settleDay"
-          :incomeOn = "item.incomeOn"
-          :paymentOff = "item.paymentOff"
+          :payType = "item.operationType"
+          :orderSn = "item.ordersn"
+          :date = "item.createDate"
+          :amount = "item.amount"
         />
     </div>
   </div>
 </template>
 <script>
-// import { getDayFinanceList } from "../../utils/api";
-import FinanceItem from "@/components/FinanceItem.vue";
-// import { app } from "../../utils/app";
+import { getDayFinanceList } from "../../utils/api";
+import FinanceItemDaly from "@/components/FinanceItemDaly.vue";
+import { app } from "../../utils/app";
 import { NavBar, Uploader, Popup, Form, Field, Button } from "vant";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -36,14 +37,17 @@ Vue.use(Button);
 
 export default {
   name: "ShopData",
-  components: {FinanceItem},
+  components: {FinanceItemDaly},
   data() {
     return {
       list:''
     };
   },
   created() {
-
+    let shopToken = app.storage.get("shopToken");
+    this.shopToken = shopToken;
+    console.log("shopToken:", this.shopToken);
+    this.getDayFinanceList();
   },
   mounted() {
 
@@ -52,7 +56,18 @@ export default {
   methods: {
       onClickLeft() {
       this.$router.back();
-    }
+    },
+    async getDayFinanceList() {
+      let params = {
+        limit:20,
+        offset:0,
+        searchDay: '2020-11-28',
+        usertoken: this.shopToken,
+      };
+      let res = await getDayFinanceList(params);
+      console.log(res.data.balanceInfoList);
+      this.list = res.data.balanceInfoList
+    },
   },
 };
 </script>

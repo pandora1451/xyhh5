@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -67,6 +66,10 @@ const routes = [{
 		path: '/ShopFinance',
 		name: 'ShopFinance',
 		component:() => import('../views/ShopFinance.vue')
+	},{
+		path: '/ShopFinanceDaly',
+		name: 'ShopFinanceDaly',
+		component:() => import('../views/ShopFinanceDaly.vue')
 	},{
 		path: '/ShopJoin',
 		name: 'ShopJoin',
