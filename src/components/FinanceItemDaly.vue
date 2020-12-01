@@ -5,7 +5,7 @@
         <div class="type">支付方式{{ payType }}</div>
         <div class="sn">{{ orderSn }}</div>
       </div>
-      <div class="content">{{ createDate }}</div>
+      <div class="content">{{ date }}</div>
     </div>
     <div class="right">￥{{ amount }}</div>
   </div>
@@ -15,8 +15,8 @@
 export default {
   name: "FinaceItemDaly",
   props: {
-    payType: String,
-    orderSn: Number,
+    payType: null,
+    orderSn: String,
     date: String,
     amount: Number,
   },
@@ -30,9 +30,14 @@ export default {
       return result;
     },
   },
+  create(){
+      
+  },
   mounted() {
     //  console.log('111111',this.date)
     //  console.log(new Date(this.date).getFullYear())
+    // let query = this.$route.query.date
+    // console.log('555555',query)
   },
   methods: {},
 };

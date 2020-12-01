@@ -1,11 +1,12 @@
 <template>
   <div class="container-finance-daly">
     <van-nav-bar
-      title="CWYB"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
-    />
+    >
+      <div slot="title" class="nav-bar-title">{{searchDay}}</div>
+    </van-nav-bar>
     <div class="data-wrapper">
         <FinanceItemDaly 
           v-for="item in list"
@@ -40,14 +41,20 @@ export default {
   components: {FinanceItemDaly},
   data() {
     return {
-      list:''
+      list:'',
+      searchDay:''
     };
   },
   created() {
+    let query = this.$route.query.date
+    this.searchDay = query
+
     let shopToken = app.storage.get("shopToken");
     this.shopToken = shopToken;
     console.log("shopToken:", this.shopToken);
     this.getDayFinanceList();
+
+    
   },
   mounted() {
 
@@ -61,7 +68,7 @@ export default {
       let params = {
         limit:20,
         offset:0,
-        searchDay: '2020-11-28',
+        searchDay: this.searchDay,
         usertoken: this.shopToken,
       };
       let res = await getDayFinanceList(params);

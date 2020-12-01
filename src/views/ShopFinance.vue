@@ -1,7 +1,7 @@
 <template>
   <div class="container-finance">
     <van-nav-bar
-      title="CWYB"
+      title="财务月报"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
@@ -88,7 +88,7 @@ export default {
   methods: {
     async getMonthFinanceList() {
       let params = {
-        searchMonth: 202010,
+        searchMonth: 202012,
         usertoken: this.shopToken,
       };
       let res = await getMonthFinanceList(params);

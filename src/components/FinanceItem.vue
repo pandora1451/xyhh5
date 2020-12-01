@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     goToDaly(){
-      this.$router.push({path:'/ShopFinanceDaly'})
+      this.$router.push({path:'/ShopFinanceDaly',query: {date:this.evenDate}})
     }
   },
 };
