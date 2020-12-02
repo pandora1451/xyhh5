@@ -43,7 +43,6 @@
 	import axios from 'axios'
 	import Vue from 'vue';
 	import router from '../router';
-	import html2canvas from "html2canvas"
 	import {
 		Swipe,
 		SwipeItem,

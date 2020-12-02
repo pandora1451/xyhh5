@@ -71,9 +71,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import Vue from "vue";
-import router from "../router";
 import { app } from "../../utils/app";
 import { Form, Field, Button, CellGroup, Toast,Swipe,SwipeItem ,Dialog} from "vant";
 import { getValidateCode, regist } from "../../utils/api";

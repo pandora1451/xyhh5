@@ -31,9 +31,7 @@
 </template>
 <script>
 // @ is an alias to /src
-import axios from "axios";
 import Vue from "vue";
-import router from "../router";
 
 
 import { Button, Swipe, SwipeItem } from "vant";

@@ -9,7 +9,7 @@
     <div class="date-box">
       <div class="days">{{ searchMonth }}</div>
       <div class="title-box">
-        <div class="title">当前余额:</div>
+        <div class="title">当前余额:{{remainAmount}}</div>
         <div class="content">{{nowPrice}}</div>
       </div>
       <div class="button-box">
@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-import { getMonthFinanceList } from "../../utils/api";
+import { getMonthFinanceList ,indexData,withDraw} from "../../utils/api";
 import FinanceItem from "@/components/FinanceItem.vue";
 import { app } from "../../utils/app";
 import { NavBar, Uploader, Popup, Form, Field, Button } from "vant";
@@ -68,21 +68,25 @@ export default {
   data() {
     return {
       list: "",
+      token:'',
       shopToken: "",
       searchMonth: "2020年11月",
       txPrice: "",
       showTX: false,
-      nowPrice:''
+      nowPrice:'',
+      remainAmount:''
     };
   },
   created() {
+    let token = app.storage.get("token");
+    this.token = token
     let shopToken = app.storage.get("shopToken");
     this.shopToken = shopToken;
     console.log("shopToken:", this.shopToken);
     this.getMonthFinanceList();
   },
   mounted() {
-
+    this.indexData()
   },
   watch: {},
   methods: {
@@ -95,14 +99,28 @@ export default {
       // console.log(res.data.balanceDayList);
       this.list = res.data.balanceDayList
     },
+    async indexData(){
+      let res = await indexData({
+        usertoken: this.shopToken,
+      });
+      this.remainAmount = res.data.remainAmount;
+    },
     onClickLeft() {
       this.$router.back();
     },
     txBtnTap() {
       this.showTX = true;
     },
-    onTX(values) {
+    async onTX(values) {
       console.log(values);
+      let val = values.txPrice
+      let params = {
+        fee:val,
+        token:this.token,
+        usertoken:this.shopToken
+      }
+      let res = await withDraw(params)
+      console.log(res)
     },
   },
 };

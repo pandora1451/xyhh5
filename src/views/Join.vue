@@ -17,16 +17,9 @@
 </template>
 <script>
 	// @ is an alias to /src
-	import Vue from 'vue';
-	import router from '../router';
 	import {
 	} from 'vant';
-
 	import { app } from "../../utils/app";
-	import { root } from "../../utils/const";
-
-	import { appid } from "../../utils/const";
-
 	export default {
 		name: 'Home',
 		components: {

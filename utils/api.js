@@ -25,7 +25,6 @@ export function getWechatCode(params) {
 	})
 }
 export function login(params) {
-	console.log('login1234')
 	return Service({
 		url: '/mall/small/h5/login',
 		params: params
@@ -45,7 +44,7 @@ export function shopLogin(params) {
 	})
 }
 //商铺注册
-export function shopRegist(paams) {
+export function shopRegist(params) {
 	return Service({
 		url: '/shop/sshop/rigist',
 		params: params
@@ -88,8 +87,8 @@ export function getMonthFinanceList(params) {
 }
 //提现申请
 export function withDraw(params) {
-	return ServiceGet({
-		url: '/sshop/user/withdraw',
+	return Service({
+		url: '/shop/sshop/user/withdraw',
 		params: params
 	})
 }
