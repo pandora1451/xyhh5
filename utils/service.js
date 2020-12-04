@@ -20,6 +20,14 @@ export const ServiceGet = axios.create({
     'Content-Type': 'application/json;charset=UTF-8'
   }
 })
+export const ServiceWxGet = axios.create({
+  timeout: 7000, // 请求超时时间
+  baseURL: 'https://api.ydxyh.cn/mall/small',
+  method: 'get',
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+})
 // 添加请求拦截器
 // Service.interceptors.request.use(config => {
 //   loadingInstance = Loading.service({

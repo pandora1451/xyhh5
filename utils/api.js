@@ -142,3 +142,17 @@ export function makeMessage(params) {
 		params: params
 	})
 }
+//获取总好友数
+export function friendList(params) {
+	return ServiceGet({
+		url: '/user/friend-list',
+		params: params
+	})
+}
+//获取周新增好友数
+export function friendReturn(params) {
+	return ServiceGet({
+		url: '/user/friend-return',
+		params: params
+	})
+}

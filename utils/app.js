@@ -2,7 +2,6 @@ import {
     root
 } from "./const";
 import {BASE_URL} from "./const"
-import router from '../src/router';
 import jquery from "jquery"
 const $ = jquery
 const app = {}
@@ -22,7 +21,7 @@ app.doAjax = function (interFace, type, param, succCallBack) {
         type: type,
         data: param,
         //timeout: root.timeout,
-        beforeSend: function (request) {
+        beforeSend: function () {
             // app.loader.show();
         },
         success: function (data, status, response) {

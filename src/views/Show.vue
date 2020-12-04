@@ -32,8 +32,6 @@
 <script>
 // @ is an alias to /src
 import Vue from "vue";
-
-
 import { Button, Swipe, SwipeItem } from "vant";
 Vue.use(Button);
 Vue.use(Swipe);
