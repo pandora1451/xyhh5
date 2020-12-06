@@ -20,8 +20,8 @@
         <FinanceItem 
           v-for="item in list"
           :key="item.id"
-          :date = "item.settleDay"
-          :incomeOn = "item.incomeOn"
+          :date = "item.settleDayStr"
+          :incomeOff = "item.incomeOff"
           :paymentOff = "item.paymentOff"
         />
     </div>
@@ -70,7 +70,7 @@ export default {
       list: "",
       token:'',
       shopToken: "",
-      searchMonth: "2020年11月",
+      searchMonth: "",
       txPrice: "",
       showTX: false,
       nowPrice:'',
@@ -84,6 +84,7 @@ export default {
     this.shopToken = shopToken;
     console.log("shopToken:", this.shopToken);
     this.getMonthFinanceList();
+    this.searchMonth = this.getNowMonth(0)
   },
   mounted() {
     this.indexData()
@@ -91,8 +92,9 @@ export default {
   watch: {},
   methods: {
     async getMonthFinanceList() {
+      let nSearchMonth = this.getNowMonth()
       let params = {
-        searchMonth: 202012,
+        searchMonth: nSearchMonth,
         usertoken: this.shopToken,
       };
       let res = await getMonthFinanceList(params);
@@ -122,6 +124,16 @@ export default {
       let res = await withDraw(params)
       console.log(res)
     },
+    getNowMonth(type){
+      let d= new Date()
+      let year= d.getFullYear()
+      let month= d.getMonth()<9?`0${d.getMonth()+1}`:d.getMonth()+1
+      if (type==0) {
+        return `${year}年${month}月`
+      }else{
+        return `${year}${month}`
+      }
+    }
   },
 };
 </script>

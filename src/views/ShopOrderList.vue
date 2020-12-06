@@ -109,7 +109,9 @@ export default {
         value.getMonth() > 8
           ? value.getMonth() + 1
           : `0${value.getMonth() + 1}`;
-      let date = value.getDate();
+      let date = value.getDate()> 9
+          ? value.getMonth()
+          : `0${value.getMonth()}`;
       let result = `${year}-${month}-${date}`;
       return result;
     },

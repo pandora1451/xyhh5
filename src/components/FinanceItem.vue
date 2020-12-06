@@ -1,7 +1,7 @@
 <template>
   <div class="item-finacnce" @click="goToDaly">
-    <div class="date">{{evenDate}}</div>
-    <div class="income">收入：{{ incomeOn }}</div>
+    <div class="date">{{date}}</div>
+    <div class="income">收入：{{ incomeOff }}</div>
     <div class="pay">支出：{{ paymentOff }}</div>
     <van-icon name="arrow" color="#666" />
   </div>
@@ -17,18 +17,10 @@ export default {
   name: "FinaceItem",
   props:{
       date:String,
-      incomeOn:Number,
+      incomeOff:Number,
       paymentOff:Number
   },
   computed: {
-    evenDate: function () {
-      let result = 1;
-      let year = new Date(this.date).getFullYear();
-      let mounth = new Date(this.date).getMonth() + 1;
-      let day = new Date(this.date).getDate();
-      result = `${year}-${mounth}-${day}`;
-      return result;
-    },
   },
  mounted() {
     //  console.log('111111',this.date)
@@ -36,13 +28,13 @@ export default {
   },
   methods: {
     goToDaly(){
-      this.$router.push({path:'/ShopFinanceDaly',query: {date:this.evenDate}})
+      this.$router.push({path:'/ShopFinanceDaly',query: {date:this.date}})
     }
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 .item-finacnce {
   display: flex;
   justify-content: space-between;
@@ -51,5 +43,15 @@ export default {
   min-height: 40px;
   align-items: center;
   border-top: 1px solid #555555;
+  text-align: left;
+  .date{
+    min-width: 100px;
+  }
+  .income{
+    min-width: 100px;
+  }
+  .pay{
+    min-width: 100px;
+  }
 }
 </style>
