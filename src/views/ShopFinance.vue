@@ -7,7 +7,11 @@
       @click-left="onClickLeft"
     />
     <div class="date-box">
-      <div class="days">{{ searchMonth }}</div>
+      <div class="days">
+        <button @click="chooseMonth">
+        {{ searchMonthShow }}
+        </button>
+      </div>
       <div class="title-box">
         <div class="title">当前余额:{{remainAmount}}</div>
         <div class="content">{{nowPrice}}</div>
@@ -43,13 +47,26 @@
         </div>
       </van-form>
     </van-popup>
+    <template v-if="showMonthPicker">
+      <van-datetime-picker
+        v-model="currentDate"
+        type="year-month"
+        title="选择年月"
+        class="monthPicker"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :formatter="formatter"
+        @confirm='pickerConfirm'
+        @cancel='pickerCancel'
+      />
+    </template>
   </div>
 </template>
 <script>
 import { getMonthFinanceList ,indexData,withDraw} from "../../utils/api";
 import FinanceItem from "@/components/FinanceItem.vue";
 import { app } from "../../utils/app";
-import { NavBar, Uploader, Popup, Form, Field, Button } from "vant";
+import { NavBar, Uploader, Popup, Form, Field, Button, DatetimePicker} from "vant";
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(NavBar);
@@ -59,6 +76,8 @@ Vue.use(Popup);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
+Vue.use(DatetimePicker);
+
 
 // @ is an alias to /src
 
@@ -71,10 +90,15 @@ export default {
       token:'',
       shopToken: "",
       searchMonth: "",
+      searchMonthShow:'',
       txPrice: "",
       showTX: false,
       nowPrice:'',
-      remainAmount:''
+      remainAmount:'',
+      showMonthPicker:false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(2025, 10, 1),
+      currentDate: new Date(),
     };
   },
   created() {
@@ -83,22 +107,23 @@ export default {
     let shopToken = app.storage.get("shopToken");
     this.shopToken = shopToken;
     console.log("shopToken:", this.shopToken);
+    this.searchMonthShow = this.getNowMonth(0)
+    this.searchMonth = this.getNowMonth()
     this.getMonthFinanceList();
-    this.searchMonth = this.getNowMonth(0)
+
   },
   mounted() {
     this.indexData()
   },
   watch: {},
   methods: {
+    //获取月度财务列表
     async getMonthFinanceList() {
-      let nSearchMonth = this.getNowMonth()
       let params = {
-        searchMonth: nSearchMonth,
+        searchMonth: this.searchMonth,
         usertoken: this.shopToken,
       };
       let res = await getMonthFinanceList(params);
-      // console.log(res.data.balanceDayList);
       this.list = res.data.balanceDayList
     },
     async indexData(){
@@ -133,6 +158,29 @@ export default {
       }else{
         return `${year}${month}`
       }
+    },
+    chooseMonth(){
+      this.showMonthPicker = true
+    },
+    formatter(type, val) {
+      if (type === 'year') {
+        return `${val}年`;
+      } else if (type === 'month') {
+        return `${val}月`;
+      }
+      return val;
+    },
+    //查询月份
+    pickerConfirm(date){
+      let year= date.getFullYear()
+      let month= date.getMonth()>8?`${date.getMonth()+ 1}`:`0${date.getMonth()+1}`
+      this.searchMonth= `${year}${month}`
+      this.searchMonthShow= `${year}年${month}月`
+      this.showMonthPicker= false
+      this.getMonthFinanceList()
+    },
+    pickerCancel(){
+      this.showMonthPicker = false
     }
   },
 };
@@ -159,6 +207,11 @@ export default {
       display: flex;
       align-items: center;
     }
+  }
+  .monthPicker{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
   }
 }
 </style>
